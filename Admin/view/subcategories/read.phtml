@@ -1,0 +1,107 @@
+<?php $entity = $this->view->entity; ?>
+<?php if ($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('subcategories'))): ?>
+    <section class="content-header mt-5">
+        <div class="container-fluid mt-2">
+            <div class="row mb-2">
+                <div class="col-11">
+                    <h1 style="position: relative; top: 5px">
+                        <i class="fas fa-info-circle pr-1"></i>
+                        Subcategoria
+                    </h1>
+                </div>
+                <div class="col-1">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item">
+                            <button type="button" class="btn btn-outline-primary" title="Voltar para Subcategorias"
+                                onclick="listSubcategories('<?php echo $_POST['category_uuid']; ?>');" style="width: 100%;">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content" style="margin-left: 9px; margin-right: 9px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?php if ($entity['status'] == '1'): ?>
+                                        <i class="fa fa-circle pr-1" style="color: green;"></i> Subcategoria ativa no site
+                                    <?php endif; ?>
+                                    <?php if ($entity['status'] == '0'): ?>
+                                        <i class="fa fa-circle pr-1" style="color: red;"></i> Subcategoria inativa no site
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="nome">Nome</label>
+                                        <p>
+                                            <?php echo $entity['name']; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <span>Cadastrada em:</span> <br>
+                                    <b>
+                                        <?php echo $this->formatDateTime($entity['created_at']); ?>
+                                    </b>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <?php if (!empty($entity['updated_at'])): ?>
+                                        <span>Atualizada em:</span> <br>
+                                        <b>
+                                            <?php echo $this->formatDateTime($entity['updated_at']); ?>
+                                        </b>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4  mt-2 mb-2">
+                                            <?php if ($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('delete'), $this->moduleCodes('subcategories'))): ?>
+                                                <button type="button" class="btn btn-outline-danger"
+                                                    onclick="deleteSubcategory('<?php echo $entity['uuid']; ?>');"
+                                                    style="width: 100%;">
+                                                    <i class="fa fa-trash"></i> Remover
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="col-md-4 mt-2 mb-2">
+                                            <?php if ($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('update'), $this->moduleCodes('subcategories'))): ?>
+                                                <button type="button" class="btn btn-outline-success"
+                                                    onclick="updateSubcategory('<?php echo $entity['uuid']; ?>');"
+                                                    style="width: 100%;">
+                                                    <i class="fa fa-pen pr-1"></i> Editar
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="col-md-4 mt-2 mb-2">
+                                            <button type="button" class="btn btn-outline-primary"
+                                                onclick="listSubcategories('<?php echo $entity['category_uuid']; ?>');"
+                                                style="width: 100%;">
+                                                <i class="fas fa-arrow-left pr-1"></i> Voltar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>

@@ -1,0 +1,137 @@
+<?php $entity = $this->view->entity; ?>
+<div class="table-responsive mt-3">
+    <table class="table table-bordered table-hover"  style="width: 99.9%;">
+        <tbody>
+            <tr>
+                <td style="font-size: 15px">Data</td>
+                <td style="font-size: 15px">
+                    <?php echo $this->formatDateTime($entity['created_at']); ?>
+                </td>
+            </tr>
+            <tr>
+                <td style="font-size: 15px">Colaborador</td>
+                <td style="font-size: 15px">
+                    <?php echo $entity['userName']; ?>
+                </td>
+            </tr>
+            <tr>
+                <td style="font-size: 15px">Módulo</td>
+                <td style="font-size: 15px">
+                    <?php 
+                    switch ($entity['module']) {
+                        case 'categorias':
+                            echo 'Categorias';
+                            break;
+                        case 'clientes':
+                            echo 'Clientes';
+                            break;
+                        case 'colaboradores':
+                            echo 'Colaboradores';
+                            break;
+                        default:
+                            echo 'Indefinido';
+                            break;
+                    }
+                    ?>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <hr>
+    <h4><span class="fa fa-upload pr-1"></span> Dados Importados:</h4>
+    <hr>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover" id="tbl_imports" style="width: 99.9%;">
+        <thead>
+            <tr class="text-center" style="height: 30px;">
+                <th style="font-size: 14px;">Nome do Registro</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->view->items as $item): ?>
+                <tr class="text-center"
+                    onclick="openImportDetails('<?php echo $item['uuid']; ?>', '<?php echo $entity['module']; ?>');"
+                    style="cursor: pointer; ">
+                    <td style="font-size: 15px; <?php echo ($item['deleted'] == '1' ? 'color: red' : ''); ?>">
+                        <?php echo $item['name']; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tbl_imports').DataTable({
+            "sDom": 'fltip',
+            searching: true,
+            order: [[0, "desc"]],
+            responsive: true,
+            info: true,
+            processing: true,
+            scrollCollapse: true,
+            paging: true,
+            "pageLength": 10,
+            "language": {
+                "sEmptyTable": "Nenhum registro encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "_MENU_ &nbsp;",
+                "sLoadingRecords": "Carregando...",
+                "sProcessing": "Processando...",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sSearch": "Filtrar",
+                "oPaginate": {
+                    "sNext": "Próximo",
+                    "sPrevious": "Anterior",
+                    "sFirst": "Primeiro",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            }
+        });
+    });
+
+    function openImportDetails(uuid, mdl) {
+        let targetUrl = '';
+        if (mdl == 'categorias') {
+            targetUrl = '<?php echo baseUrl; ?>painel/categorias/detalhes';
+        }
+
+        if (mdl == 'clientes') {
+            targetUrl = '<?php echo baseUrl; ?>painel/clientes/detalhes';
+        }
+
+        if (mdl == 'colaboradores') {
+            targetUrl = '<?php echo baseUrl; ?>painel/usuarios/detalhes';
+        }
+
+        if (mdl == 'imoveis') {
+            targetUrl = '<?php echo baseUrl; ?>painel/imoveis/detalhes';
+        }
+
+        $("#modalLarge").modal('hide');
+        $("#baseLoader").show();
+        $.ajax({
+            type: 'post',
+            url: targetUrl,
+            data: {uuid:uuid},
+            async: true
+        }).done(function(data) {
+            $("#sis_content").html(data);
+            $("#baseLoader").hide();
+        }).fail(function() {
+            showInternalErrorAlert();
+            $("#baseLoader").hide();
+        });
+    }
+</script>

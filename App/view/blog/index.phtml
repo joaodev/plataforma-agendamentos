@@ -1,0 +1,159 @@
+<?php
+$seo = $this->getSiteSeo();
+$config = $this->getSiteConfig();
+$data = $this->view->data;
+$category = $this->view->category;
+$categories = $this->view->categories;
+
+?>
+<div class="inner-banner" style="background-image: url('<?php echo $this->getInternalBanner('file_publications'); ?>'); background-size: cover;">
+    <section class="w3l-breadcrumb">
+        <div class="container">
+            <ul class="breadcrumbs-custom-path">
+                <li>
+                    <h1 style=" color: white; font-size: 40px;"><?php echo $seo['blog_title']; ?></h1>
+                    <div class="mt-2">
+                        <span class="fa fa-chevron-right mx-2" aria-hidden="true"></span> <?php echo $seo['blog_description']; ?>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+<section class="w3l-blogpost-content w3l-courses py-5">
+    <div class="container">
+        <form action="<?php echo baseUrl . 'blog/busca'; ?>" method="post">
+            <div class="col-md-12 pt-3" style="background: <?php echo $config['secondary_color']; ?>; border-radius: 5px; border: 2px solid <?php echo $config['primary_color']; ?>;">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <input type="text" class="form-control" name="p" id="keyword" placeholder="Palavra-chave" value="<?php echo (!empty($_GET['p'])) ? $_GET['p'] : ''; ?>">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <select name="c" id="category" class="form-control" onchange="getSubcategories();">
+                            <option value="">Selecione</option>
+                            <?php foreach ($categories as $cat) : ?>
+                                <option value="<?php echo ($cat['uuid']); ?>" <?php echo (!empty($category['uuid']) && $category['uuid'] == $cat['uuid']) ? 'selected' : ''; ?>>
+                                    <?php echo $cat['name']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <select name="s" id="subcategory" class="form-control">
+                            <option value="">Subcategoria</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-1 mb-3">
+                        <button type="submit" class="btn btn-primary" style="width: 100%; border: 2px solid <?php echo $config['primary_color']; ?>;">
+                            <span class="fa fa-search"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row mt-5">
+            <?php foreach ($data as $entity) :
+                $file = $this->getPostFile($entity['uuid']);
+            ?>
+                <div class="col-md-12 item mb-5">
+                    <div class="card ">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <?php if (!empty($file)) : ?>
+                                    <a href="<?php echo baseUrl . 'post?s=' . $entity['slug']; ?>">
+                                        <img src="<?php echo baseUrl . 'public/uploads/blog/' . $file; ?>" alt="<?php echo $entity['title']; ?>" class="img-fluid w-100" style="box-shadow: 0 0 0.5em <?php echo $config['secondary_color'] ?>;">
+                                    </a>
+                                <?php else : ?>
+                                    <a href="<?php echo baseUrl . 'post?s=' . $entity['slug']; ?>">
+                                        <img src="<?php echo baseUrl . 'public/uploads/semfoto.png'; ?>" alt="<?php echo $entity['title']; ?>" class="img-fluid w-100" style="box-shadow: 0 0 0.5em <?php echo $config['secondary_color'] ?>;">
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="pt-3 ml-3">
+                                    <span class="fa fa-calendar"></span> <b>
+                                        <?php echo $this->formatDateTimeWithLabels($entity['created_at']); ?>
+                                    </b>
+                                </div>
+                                <a href="<?php echo baseUrl . 'post?s=' . $entity['slug']; ?>" class="blog-desc ml-3">
+                                    <?php echo $entity['title']; ?>
+                                </a>
+                                <div class="ml-3 pb-3">
+                                    <a href="<?php echo baseUrl . 'post?s=' . $entity['slug']; ?>" class="">
+                                        <span class="">
+                                            <?php echo $entity['subtitle']; ?>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            <?php if ($this->view->pagesTotal > 1) : ?>
+                <div class="col-md-12">
+                    <div class="pagination-wrapper mt-3 pt-lg-3 text-center">
+                        <ul class="page-pagination ">
+                            <?php if ($this->view->page > 1) : ?>
+                                <li>
+                                    <a <?php echo ($this->view->page == 1) ? '' : 'class="page-numbers"'; ?> href="<?php echo baseUrl . 'publicacoes?page=1'; ?>">
+                                        <span aria-current="page" class="page-numbers <?php echo ($this->view->page == 1) ? 'current' : ''; ?>">Primeira</span>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php for ($i = 1; $i <= ceil($this->view->pagesTotal); $i++) : ?>
+                                <li>
+                                    <a class="<?php echo ($this->view->page == $i) ? '' : 'page-numbers '; ?>" href="<?php echo baseUrl . 'publicacoes?page=' . $i; ?>">
+                                        <span aria-current="page" class="page-numbers <?php echo ($this->view->page == $i) ? 'current' : ''; ?>">
+                                            <?php echo $i; ?>
+                                        </span>
+                                    </a>
+                                </li>
+                            <?php endfor; ?>
+                            <?php if ($this->view->page < $this->view->pagesTotal) : ?>
+                                <li>
+                                    <a class="next" href="<?php echo baseUrl . 'publicacoes?page=' . ceil($this->view->pagesTotal); ?>">
+                                        Última <span class="fa fa-angle-right"></span>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <?php if (empty($data)) : ?>
+                <div class="col-md-12 text-center">Não há publicações para serem listadas.</div>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+
+<script src="<?php echo baseUrl . 'public/js/jquery.min.js' ?>"></script>
+<script>
+    function getSubcategories() {
+        let categoryUuid = $("#category").val();
+
+        if (categoryUuid !== '') {
+            $("#subcategory").html('<option value="0">Aguarde...</option>');
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo baseUrl; ?>blog/subcategorias",
+                data: {
+                    categoryUuid: categoryUuid,
+                    subcategorySlug: '<?php echo (!empty($_GET['s']) ? $_GET['s'] : ''); ?>'
+                },
+                async: true
+            }).done(function(data) {
+                $("#subcategory").html(data);
+            }).fail(function() {
+                showInternalErrorAlert();
+                $("#subcategory").html('<option value="">Subcategoria</option>');
+            });
+        } else {
+            $("#subcategory").html('<option value="">Subcategoria</option>');
+        }
+    }
+
+    getSubcategories();
+</script>

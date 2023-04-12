@@ -1,0 +1,165 @@
+<?php if ($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('banners'))): ?>
+    <?php $entity = $this->view->entity; ?>
+    <section class="content-header mt-5">
+        <div class="container-fluid mt-2">
+            <div class="row mb-2">
+                <div class="col-11">
+                    <h1 style="position: relative; top: 5px">
+                        <i class="fas fa-info-circle pr-1"></i>
+                        Banner
+                    </h1>
+                </div>
+                <div class="col-1">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item">
+                            <button type="button" class="btn btn-outline-primary" title="Voltar para Banners"
+                                onclick="openModule('banner');" style="width: 100%;">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content" style="margin-left: 9px; margin-right: 9px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?php if (!empty($entity['file'])): ?>
+                                        <a href="<?php echo baseUrl . 'public/uploads/banner/'
+                                            . $entity['file']; ?>" data-lightbox="image-1" data-title="<?php echo $entity['file']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/banner/'
+                                                . $entity['file']; ?>" alt="" style="width: 100%;">
+                                        </a>
+                                        <br>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?php if ($entity['status'] == '1'): ?>
+                                        <i class="fa fa-circle pr-1" style="color: green;"></i> Banner ativo no site
+                                    <?php endif; ?>
+                                    <?php if ($entity['status'] == '0'): ?>
+                                        <i class="fa fa-circle pr-1" style="color: red;"></i> Banner inativo no site
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group mt-3">
+                                        <label for="title">Título</label>
+                                        <p>
+                                            <?php echo $entity['title'] ? $entity['title'] : 'Não informado'; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group mt-3">
+                                        <label for="title">Legenda</label>
+                                        <p>
+                                            <?php echo $entity['caption'] ? $entity['caption'] : 'Não informada'; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mt-3">
+                                        <label for="title">Título do Botão 1</label>
+                                        <p>
+                                            <?php echo $entity['title_link_1'] ? $entity['title_link_1'] : 'Não informado'; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mt-3">
+                                        <label for="title">Link do Botão 1</label>
+                                        <p>
+                                            <?php echo $entity['link_1'] ? $entity['link_1'] : 'Não informado'; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mt-3">
+                                        <label for="title">Título do Botão 2</label>
+                                        <p>
+                                            <?php echo $entity['title_link_2'] ? $entity['title_link_2'] : 'Não informado'; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mt-3">
+                                        <label for="title">Link do Botão 2</label>
+                                        <p>
+                                            <?php echo $entity['link_2'] ? $entity['link_2'] : 'Não informado'; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <span>Cadastrado em:</span> <br>
+                                    <b>
+                                        <?php echo $this->formatDateTime($entity['created_at']); ?>
+                                    </b>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <?php if (!empty($entity['updated_at'])): ?>
+                                        <span>Atualizado em:</span> <br>
+                                        <b>
+                                            <?php echo $this->formatDateTime($entity['updated_at']); ?>
+                                        </b>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-4 mt-2 mb-2">
+                                            <?php if ($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('delete'), $this->moduleCodes('banners'))): ?>
+                                                <button type="button" class="btn btn-outline-danger" title="Remover Banner"
+                                                    onclick="deleteBanner('<?php echo $entity['uuid']; ?>');"
+                                                    style="width: 100%;">
+                                                    <i class="fa fa-trash"></i> Remover
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-4 mt-2 mb-2">
+                                            <?php if ($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('update'), $this->moduleCodes('banners'))): ?>
+                                                <button type="button" class="btn btn-outline-success" title="Editar Banner"
+                                                    onclick="updateBanner('<?php echo $entity['uuid']; ?>');"
+                                                    style="width: 100%;">
+                                                    <i class="fa fa-pen pr-1"></i> Editar
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-4 mt-2 mb-2">
+                                            <button type="button" class="btn btn-outline-primary"
+                                                onclick="openModule('banner');" style="width: 100%;"
+                                                title="Voltar para Banners">
+                                                <i class="fas fa-arrow-left pr-1"></i> Voltar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>

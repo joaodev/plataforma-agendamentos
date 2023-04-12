@@ -1,0 +1,181 @@
+<?php
+$entity = $this->view->entity;
+
+$canView = $_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('home'));
+$canUpdate = $_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('update'), $this->moduleCodes('home'));
+?>
+<?php if ($canView) : ?>
+    <section class="content-header mt-5">
+        <div class="container-fluid mt-2">
+            <div class="row mb-2">
+                <div class="col-11">
+                    <h1 style="position: relative; top: 5px">
+                        <i class="fas fa-image pr-1"></i>
+                        Home
+                    </h1>
+                </div>
+                <div class="col-1">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo baseUrl . 'painel'; ?>" class="btn btn-outline-primary w-100" title="Página Inical">
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content" style="margin-left: 9px; margin-right: 9px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="post" name="formUpdateHome" id="formUpdateHome" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3>Texto curto <b>Sobre Nós</b> no rodapé</h3>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="footer_title">Título*</label>
+                                            <input type="text" class="form-control" name="footer_title" id="footer_title" maxlength="50"
+                                            <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['footer_title']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="footer_description">Descrição do bloco 1</label>
+                                            <textarea name="footer_description" id="footer_description" rows="5" class="form-control" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?>><?php echo $entity['footer_description']; ?></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <hr>
+                                        <h3>Imagem <b>Fundo do Quadro de Serviços</b></h3>
+                                        <div class="form-group">
+                                            <?php if (!empty($entity['file_services'])) : ?>
+                                                <a href="<?php echo baseUrl . 'public/uploads/about/'
+                                                                . $entity['file_services']; ?>" data-lightbox="image-1" data-title="<?php echo $entity['file_services']; ?>">
+                                                    <img src="<?php echo baseUrl . 'public/uploads/about/'
+                                                                    . $entity['file_services']; ?>" alt="" style="width: 100%;" class="mb-3">
+                                                </a>
+                                                <?php if ($canUpdate) : ?>
+                                                    <div>
+                                                        <input type="checkbox" name="remove_image_services" id="remove_image_services" value="1"> Remover imagem
+                                                    </div>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($canUpdate) : ?>
+                                                <input type="file" class="form-control mt-3" name="file_services" id="file_services">
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <hr>
+                                        <h3>Imagem <b>Fundo do Quadro de Newslleter</b></h3>
+                                        <div class="form-group">
+                                            <?php if (!empty($entity['file_newsletter'])) : ?>
+                                                <a href="<?php echo baseUrl . 'public/uploads/about/'
+                                                                . $entity['file_newsletter']; ?>" data-lightbox="image-1" data-title="<?php echo $entity['file_newsletter']; ?>">
+                                                    <img src="<?php echo baseUrl . 'public/uploads/about/'
+                                                                    . $entity['file_newsletter']; ?>" alt="" style="width: 100%;" class="mb-3">
+                                                </a>
+                                                <?php if ($canUpdate) : ?>
+                                                    <div>
+                                                        <input type="checkbox" name="remove_image_newsletter" id="remove_image_newsletter" value="1"> Remover imagem
+                                                    </div>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($canUpdate) : ?>
+                                                <input type="file" class="form-control mt-3" name="file_newsletter" id="file_newsletter">
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                    <?php if ($canUpdate) : ?>
+                                        <div class="col-md-8 mt-2 mb-2">
+                                            <button type="submit" class="btn btn-success w-100" id="btnSubmit" title="Salvar">
+                                                <i class="fa fa-save pr-1"></i> Salvar
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4 mt-2 mb-2">
+                                            <a href="<?php echo baseUrl . 'painel'; ?>" class="btn btn-outline-primary w-100" title="Página Inicial">
+                                                <i class="fas fa-home pr-1"></i> Início
+                                            </a>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php if ($canUpdate) : ?>
+        <link rel="stylesheet" type="text/css" href="<?php echo baseUrl; ?>public/admin/tinymce/tinymce.min.css">
+        <script src="<?php echo baseUrl; ?>public/admin/tinymce/tinymce.js" type="text/javascript"></script>
+        <script>
+            $(document).ready(function() {
+                tinymce.init({
+                    selector: 'textarea',
+                    height: 350,
+                    plugins: [
+                        'advlist autolink lists link image charmap print preview anchor textcolor',
+                        'searchreplace visualblocks code fullscreen',
+                        'insertdatetime media table contextmenu paste code help wordcount'
+                    ],
+                    toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+                    content_css: [
+                        '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                        '//www.tinymce.com/css/codepen.min.css'
+                    ]
+                });
+
+                $('#formUpdateHome').validate({
+                    submitHandler: function() {
+                        let file_services = $('#file_services').prop('files')[0];
+                        let file_newsletter = $('#file_newsletter').prop('files')[0];
+                        let form_data = new FormData();
+
+                        form_data.append('file_services', file_services);
+                        form_data.append('file_newsletter', file_newsletter);
+                        form_data.append('footer_title', $("#footer_title").val());
+                        form_data.append('footer_description', $("#footer_description").val());
+
+                        if ($('#remove_image_services').is(':checked')) {
+                            form_data.append('remove_image_services', $("#remove_image_services").val());
+                        }
+
+                        if ($('#remove_image_newsletter').is(':checked')) {
+                            form_data.append('remove_image_newsletter', $("#remove_image_newsletter").val());
+                        }
+
+                        $("#baseLoader").show();
+                        $("#btnSubmit").attr('disabled', true);
+
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo baseUrl; ?>painel/home/processa-edicao",
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            data: form_data,
+                            dataType: 'json',
+                            async: true
+                        }).done(function(data) {
+                            showAlert(data.type, data.title, data.msg, data.pos);
+                            window.location.href = "<?php echo baseUrl; ?>painel?mod=home";
+                        }).fail(function() {
+                            showInternalErrorAlert();
+                            $("#baseLoader").hide();
+                            $("#btnSubmit").attr('disabled', false);
+                        });
+
+                        return false;
+                    }
+                });
+            });
+        </script>
+    <?php endif; ?>
+<?php endif; ?>

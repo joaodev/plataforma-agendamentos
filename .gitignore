@@ -1,0 +1,3 @@
+.idea*
+_config/conf.php
+vendor/Core/Init/Bootstrap.php

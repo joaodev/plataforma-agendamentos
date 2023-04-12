@@ -1,0 +1,44 @@
+<?php $entity = $this->view->entity; ?>
+<?php if (($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('newsletter')))): ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <p>
+                    <?php echo $entity['name']; ?>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="nome">Email</label>
+                <p>
+                    <?php echo $entity['email']; ?>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <hr>
+        </div>
+        <div class="col-6 text-left">
+            <span>Cadastrado em:</span>
+            <b>
+                <?php echo $this->formatDateTime($entity['created_at']); ?>
+            </b>
+        </div>
+        <div class="col-6 text-right"></div>
+        <div class="col-md-12">
+            <hr>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-10"></div>
+        <?php if (($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('delete'), $this->moduleCodes('newsletter')))): ?>
+            <div class="col-12 text-right">
+                <button type="button" class="btn btn-outline-danger"
+                    onclick="deleteNewsletter('<?php echo $entity['uuid']; ?>');" title="Remover Email">
+                    <i class="fa fa-trash"></i> Remover
+                </button>
+            </div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

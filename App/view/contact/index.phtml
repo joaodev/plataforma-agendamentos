@@ -1,0 +1,167 @@
+<?php
+$seo = $this->getSiteSeo();
+$config = $this->getSiteConfig();
+?>
+<div class="inner-banner" style="background-image: url('<?php echo $this->getInternalBanner('file_contact'); ?>'); background-size: cover;">
+    <section class="w3l-breadcrumb">
+        <div class="container">
+            <ul class="breadcrumbs-custom-path">
+                <li>
+                    <h1 style=" color: white; font-size: 40px;"><?php echo $seo['contact_title']; ?></h1>
+                    <div class="mt-2">
+                        <span class="fa fa-chevron-right mx-2" aria-hidden="true"></span> <?php echo $seo['contact_description']; ?>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+<!-- contact1 -->
+<section class="w3l-contact-1 py-5" id="contact">
+    <div class="contacts-9 ">
+        <div class="container">
+
+            <div class="d-grid contact-view mb-5 pb-lg-5">
+                <div class="cont-details">
+                    <div class="contactct-fm-text text-left mb-md-5 mb-4">
+                        <div class="header-title mb-md-5 mt-4">
+                            <h3 class="hny-title text-left">Informações de Contato</h3>
+                        </div>
+                    </div>
+                    <?php if (!empty($config['phone'])) : ?>
+                        <div class="cont-top mb-4">
+                            <div class="cont-left text-center">
+                                <span class="fa fa-phone"></span>
+                            </div>
+                            <div class="cont-right">
+                                <h6>Telefone</h6>
+                                <p><a href="tel:<?php echo $config['phone']; ?>"><?php echo $config['phone']; ?></a></p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <div class="cont-top">
+                        <div class="cont-left text-center">
+                            <span class="fa fa-phone"></span>
+                        </div>
+                        <div class="cont-right">
+                            <h6>Celular</h6>
+                            <p><a href="tel:<?php echo $config['cellphone']; ?>"><?php echo $config['cellphone']; ?></a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="cont-top margin-up">
+                        <div class="cont-left text-center">
+                            <span class="fa fa-envelope-o"></span>
+                        </div>
+                        <div class="cont-right">
+                            <h6>Email</h6>
+                            <p><a href="mailto:<?php echo $config['email']; ?>" class="mail"><?php echo $config['email']; ?></a></p>
+                        </div>
+                    </div>
+                    <?php if ($config['full_address']) : ?>
+                        <div class="cont-top margin-up">
+                            <div class="cont-left text-center">
+                                <span class="fa fa-map-marker"></span>
+                            </div>
+                            <div class="cont-right">
+                                <h6>Endereço</h6>
+                                <p class="pr-lg-5">
+                                    <?php echo $config['full_address']; ?>
+                                </p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="map-content-9">
+                    <div class="contactct-fm map-content-9 pl-lg-4">
+                        <div class="contactct-fm-text text-left">
+                            <div class="header-title mb-md-5 mt-4">
+                                <h3 class="hny-title text-left">Envie uma mensagem</h3>
+                            </div>
+                        </div>
+                        <form action="<?php echo baseUrl; ?>fale-conosco/enviar-mensagem" method="post">
+                            <div class="twice-two">
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Nome" required="">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Email" required="">
+                            </div>
+                            <div class="twice">
+                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Assunto" required="">
+                            </div>
+                            <textarea name="message" class="form-control" id="message" placeholder="Mensagem" required=""></textarea>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary btn-style mt-4 btnAction">Enviar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <?php if (!empty($config['google_maps'])) : ?>
+                <div class="map-iframe">
+                    <iframe src="<?php echo $config['google_maps']; ?>" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            <?php endif ?>
+        </div>
+</section>
+<!-- /contact1 -->
+
+<?php if (!empty($_GET['msg']) && $_GET['msg'] == 'enviado') : ?>
+    <!-- Modal Mid -->
+    <div class="modal fade" id="modalMid" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h4 class="modal-title text-white" id="modalMidTitle"><span class="fa fa-check"></span> Contato Enviado
+                    </h4>
+                    <a href="<?php echo baseUrl; ?>fale-conosco" class="close text-white">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </div>
+                <div class="modal-body text-center">
+                    <h4><b>Recebemos seu contato!</b></h4>
+                    <hr>
+                    <h5 class="mt-2">
+                        Em breve um de nossos representantes entrá em contato de acordo com os dados enviados.</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#modalMid").modal('show');
+        });
+    </script>
+<?php endif; ?>
+<?php if (!empty($_GET['msg']) && $_GET['msg'] == 'nao-enviado') : ?>
+    <!-- Modal Mid -->
+    <div class="modal fade" id="modalMid" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h4 class="modal-title text-white" id="modalMidTitle"><span class="fa fa-remove"></span> Não Enviado
+                    </h4>
+                    <a href="<?php echo baseUrl; ?>fale-conosco" class="close text-white">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </div>
+                <div class="modal-body text-center">
+                    <h4><b>Erro ao enviar solicitação!</b></h4>
+                    <hr>
+                    <h5 class="mt-2">
+                        Atualize a página ou tente novamente mais tarde.</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#modalMid").modal('show');
+        });
+    </script>
+<?php endif; ?>
+<script>
+    $(document).ready(function() {
+        $(".btnAction").click(() => {
+            $("#modalLoad").modal('show');
+        });
+    });
+</script>

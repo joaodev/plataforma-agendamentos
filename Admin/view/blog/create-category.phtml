@@ -1,0 +1,65 @@
+<form method="post" name="formCreateBlogCategory" id="formCreateBlogCategory">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="name">Nome*</label>
+                <input type="text" class="form-control" name="name" required maxlength="150"
+                    placeholder="Nome da Categoria">
+            </div>
+        </div>
+        <div class="col-md-12 mt-3 mb-2">
+            <input type="hidden" name="cat_type" value="2">
+            <button type="submit" class="btn btn-success w-100" id="btnSubmitCategory" title="Salvar Categoria">
+                <i class="fa fa-save pr-1"></i> Salvar
+            </button>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $('#formCreateBlogCategory').validate({
+            rules: {
+                name: {
+                    remote: {
+                        type: "post",
+                        url: "<?php echo baseUrl; ?>painel/categorias/valor-existente",
+                    }
+                },
+            },
+            messages: {
+                name: {
+                    remote: "Categoria já cadastrada"
+                },
+            },
+            submitHandler: function (form) {
+                let dados = $(form).serialize();
+
+                $("#modalGreenMidLoader").show();
+                $("#btnSubmitCategory").show('disabled', true);
+
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo baseUrl; ?>painel/categorias/processa-cadastro",
+                    data: dados,
+                    dataType: 'json',
+                    async: true
+                }).done(function (data) {
+                    showAlert(data.type, data.title, data.msg, data.pos);
+                    if (data.type === 'success') {
+                        $("#category_uuid").append('<option value="' + data.uuid + '" selected>' + data.name + '</option>');
+                        $("#subcategory_uuid").html('<option value="">Selecione</option>');
+                        $("#modalGreenMid").modal('hide');
+                    }
+
+                    $("#btnSubmitCategory").attr('disabled', false);
+                }).fail(function () {
+                    showInternalErrorAlert();
+                    $("#modalGreenMidLoader").hide();
+                    $("#btnSubmitCategory").attr('disabled', false);
+                });
+
+                return false;
+            }
+        });
+    });
+</script>

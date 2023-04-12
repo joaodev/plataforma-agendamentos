@@ -1,0 +1,296 @@
+<?php
+$home = $this->view->home;
+$banners = $this->view->banners;
+$publications = $this->view->publications;
+$testimonials = $this->view->testimonials;
+$services = $this->view->services;
+$config = $this->getSiteConfig();
+$seo = $this->getSiteSeo();
+?>
+<section class="w3l-main-slider" id="home">
+    <div class="companies20-content">
+        <div class="owl-one owl-carousel owl-theme">
+            <?php foreach ($banners as $banner) : ?>
+                <div class="item">
+                    <div class="slider-info banner-view bg bg2"
+                        style="background: url('<?php echo baseUrl . 'public/uploads/banner/' . $banner['file']; ?>') no-repeat center; background-size: cover;">
+                        <div class="banner-info">
+                            <div class="container">
+                                <div class="banner-info-bg">
+                                    <h5><?php echo $banner['title']; ?></h5>
+                                    <p class="mt-4 pr-lg-4"><?php echo $banner['caption']; ?></p>
+                                    <?php if (!empty($banner['title_link_1'])): ?>
+                                        <a class="btn btn-style btn-primary mt-xl-5 mt-4 mr-2" href="<?php echo $banner['link_1']; ?>"> 
+                                            <?php echo $banner['title_link_1']; ?> <span class="fa fa-chevron-right ml-2"
+                                                aria-hidden="true"></span></a>
+                                    <?php endif; ?>
+                                    <?php if (!empty($banner['title_link_2'])): ?>
+                                    <a class="btn btn-style btn-secondary mt-xl-5 mt-4" href="<?php echo $banner['link_2']; ?>"> 
+                                        <?php echo $banner['title_link_2']; ?> <span class="fa fa-chevron-right ml-2"
+                                            aria-hidden="true"></span></a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<div class="content-1 py-5">
+    <div class="container py-md-5">
+        <div class="header-title mb-5 text-center">
+            <span class="sub-title">Platatorma Agendamentos</span>
+            <h3 class="hny-title">Sobre Nós</h3>
+        </div>
+        <div class="row content-1-grids">
+            <div class="col-lg-12 content-1-left forms-25-info w3l-blogpost-content ">
+                <div class="row">
+                    
+                    <div class="col-12 mb-5 text-center">
+                        <h3>Não há informações disponíveis</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+if (!empty($services)):
+    if (!empty($home['file_services'])) :
+        $imageUrl = baseUrl . 'public/uploads/about/' . $home['file_services'];
+        $bgStyle = "background-image: url('$imageUrl'); background-size: cover; ";
+    else :
+        $bgStyle = 'background-color:' . $config['primary_color'];
+    endif;
+    ?>
+    <div class="w3l-homeblog w3l-form-25-section" id="servicos" style="<?php echo $bgStyle; ?> ">
+        <div class="container py-lg-5 py-5">
+            <div class="row top-pics ">
+                <div class="col-md-12 ">
+                    <div class="header-title mb-3 text-center">
+                        <h3 class="hny-title text-center mt-3 py-2 text-white" style=" text-shadow: 1px 1px <?php echo $config['secondary_color']; ?>; ">
+                            <?php echo $seo['services_title']; ?>
+                        </h3>
+                    </div>
+                    <div class="row mt-5">
+                        <?php foreach ($services as $service) :
+                            $file = $this->getPostFile($service['uuid']);
+                        ?>
+                            <div class="col-12 col-md-4 mb-5">
+                                <div class="text-center mb-2">
+                                    <a href="<?php echo baseUrl . 'servico?s=' . $service['slug']; ?>" class="text-white">
+                                        <h5 class="text-white">
+                                            <?php echo $service['title']; ?>
+                                        </h5>
+                                    </a>
+                                </div>
+                                <div>
+                                    <?php if (!empty($file)) : ?>
+                                        <a href="<?php echo baseUrl . 'servico?s=' . $service['slug']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/services/' . $file; ?>" alt="<?php echo $service['title']; ?>" 
+                                                title="<?php echo $service['title']; ?>" style="width: 100%;margin-top: 8px; border: 1px solid #fff; border-radius: 5px">
+                                        </a>
+                                    <?php else : ?>
+                                        <a href="<?php echo baseUrl . 'servico?s=' . $service['slug']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/semfoto.png'; ?>" alt="<?php echo $service['title']; ?>" 
+                                                title="<?php echo $service['title']; ?>" style="width: 100%; margin-top: 8px; border: 1px solid #fff; border-radius: 5px">
+                                        </a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="readhny-btm text-center mx-auto mb-4">
+                    <a class="btn btn-primary btn-style " href="<?php echo baseUrl; ?>servicos">Mais serviços <span class="fa fa-chevron-right ml-2" aria-hidden="true"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php if (!empty($publications)) : ?>
+    <section class="w3l-blogpost-content py-5">
+        <div class="container">
+            <div class="header-title mb-md-5 mt-4">
+                <span class="sub-title"><?php echo $seo['blog_title']; ?></span>
+                <h3 class="hny-title text-left">Publicado Recentemente</h3>
+            </div>
+            <div class="row">
+                <?php foreach ($publications as $publication) :
+                    $file = $this->getPostFile($publication['uuid']);
+                ?>
+                    <div class="col-md-12 item mb-5">
+                        <div class="card ">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <?php if (!empty($file)) : ?>
+                                        <a href="<?php echo baseUrl . 'post?s=' . $publication['slug']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/blog/' . $file; ?>" alt="<?php echo $publication['title']; ?>" class="img-fluid w-100" style="box-shadow: 0 0 0.5em <?php echo $config['secondary_color'] ?>;">
+                                        </a>
+                                    <?php else : ?>
+                                        <a href="<?php echo baseUrl . 'post?s=' . $publication['slug']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/semfoto.png'; ?>" alt="<?php echo $publication['title']; ?>" class="img-fluid w-100" style="box-shadow: 0 0 0.5em <?php echo $config['secondary_color'] ?>;">
+                                        </a>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="pt-3 ml-3">
+                                        <span class="fa fa-calendar"></span> <b>
+                                            <?php echo $this->formatDateTimeWithLabels($publication['created_at']); ?>
+                                        </b>
+                                    </div>
+                                    <a href="<?php echo baseUrl . 'post?s=' . $publication['slug']; ?>" class="blog-desc ml-3">
+                                        <?php echo $publication['title']; ?>
+                                    </a>
+                                    <div class="ml-3 pb-3">
+                                        <a href="<?php echo baseUrl . 'post?s=' . $publication['slug']; ?>" class="">
+                                            <span class="">
+                                                <?php echo $publication['subtitle']; ?>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
+<?php
+if (!empty($home['file_newsletter'])) :
+    $imageUrlNws = baseUrl . 'public/uploads/about/' . $home['file_newsletter'];
+    $bgStyleNws = "background-image: url('$imageUrlNws'); background-size: cover;";
+else :
+    $bgStyleNws = 'background-color:' . $config['primary_color'];
+endif;
+?>
+<section class="w3l-newsletter conten w3l-form-25-section" style="<?php echo $bgStyleNws; ?>">
+    <div class="form-25-main py-5">
+        <div class="container">
+            <div class="forms-25-info">
+                <div class="header-title mb-md-5 mt-4">
+                    <span class="sub-title text-white">Mantenha-se informado!</span>
+                    <h3 class="hny-title text-left text-white">Inscreva-se em nossa Newsletter</h3>
+                </div>
+                <form action="<?php echo baseUrl; ?>cadastro-newsletter" method="post" class="signin-form mt-4 mb-2">
+                    <div class="row" style="">
+                        <div class="col-12 col-md-10 col-lg-5 mb-3">
+                            <input type="text" name="name" placeholder="Nome" required />
+                        </div>
+                        <div class="col-12 col-md-10 col-lg-5 mb-3">
+                            <input type="email" name="email" placeholder="Email" required />
+                        </div>
+                        <div class="col-12 col-md-10 col-lg-2 mb-3">
+                            <button type="submit" class="btn btn-style btn-primary" style="width: 100%; border: 1px solid <?php echo $config['secondary_color'] ?>">
+                                <span class="fa fa-check" style="font-size: 24px; position: relative; left: -5px; top: 1px;"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="forms-gds"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<?php if (!empty($testimonials)) : ?>
+    <section class="w3l-clients-1" id="testimonials">
+        <div class="cusrtomer-layout py-5">
+            <div class="container">
+                <div class="header-title mb-md-5 mb-4">
+                    <span class="sub-title">Depoimentos</span>
+                    <h3 class="hny-title text-left">O Que Nossos Clientes Dizem</h3>
+                </div>
+                <div class="testimonial-row mb-5">
+                    <div id="owl-demo1" class="owl-two owl-carousel owl-theme mb-md-3 mb-sm-5 mb-4">
+                        <?php foreach ($testimonials as $testimonial) : ?>
+                            <div class="item">
+                                <div class="testimonial-content">
+                                    <div class="testimonial">
+                                        <blockquote>
+                                            <q>
+                                                <?php echo $testimonial['description']; ?>
+                                            </q>
+                                        </blockquote>
+                                    </div>
+                                    <div class="testi-des">
+                                        <div class="test-img">
+                                            <?php if (!empty($testimonial['file'])) : ?>
+                                                <img class="img-fluid" src="<?php echo baseUrl . 'public/uploads/testimonials/' . $testimonial['file']; ?>" alt="<?php echo $testimonial['name']; ?>">
+                                            <?php else : ?>
+                                                <img src="<?php echo baseUrl; ?>public/app/assets/images/avatar.png" class="img-fluid" alt="client-img">
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="peopl align-self">
+                                            <h4>
+                                                <?php echo $testimonial['name']; ?>
+                                            </h4>
+                                            <p class="indentity">
+                                                <?php echo $testimonial['occupation']; ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
+<?php if (!empty($_GET['msg']) && $_GET['msg'] == 'cadastro-efetuado') : ?>
+    <div class="modal fade" id="modalMid" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h4 class="modal-title text-white" id="modalMidTitle"><span class="fa fa-check"></span> Email Cadastrado
+                    </h4>
+                    <a href="<?php echo baseUrl; ?>" class="close text-white">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-laugh-beam text-primary" style="font-size: 80px;"></i>
+                    <h5 class="mt-2">
+                        A partir de agora você passará a receber nossos alertas de novos conteúdos!</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#modalMid").modal('show');
+        });
+    </script>
+<?php endif; ?>
+<?php if (!empty($_GET['msg']) && $_GET['msg'] == 'inscricao-removida') : ?>
+    <div class="modal fade" id="modalMid" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h4 class="modal-title text-white" id="modalMidTitle"><span class="fa fa-check"></span> Email
+                        Descadastrado</h4>
+                    <a href="<?php echo baseUrl; ?>" class="close text-white">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </div>
+                <div class="modal-body text-center">
+                    <span class="fas fa-sad-cry text-primary" style="font-size: 80px;"></span>
+                    <h5 class="mt-2">
+                        A partir de agora você não receberá mais nossos alertas e atualizações.</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#modalMid").modal('show');
+        });
+    </script>
+<?php endif; ?>

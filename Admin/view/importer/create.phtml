@@ -1,0 +1,92 @@
+<form method="post" id="formImport" name="formImport" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="arquivo">Módulo</label>
+                <select class="form-control" name="module" id="module" required
+                    onchange="showImportModel();">
+                    <option value="">Selecione o destino dos dados</option>
+                    <option value="categorias">Categorias</option>
+                    <option value="clientes">Clientes</option>
+                    <option value="colaboradores">Colaboradores</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12" id="moduleFieldsBox" style="display: none;">
+            <hr>
+            <div class="form-group">
+                <label for="arquivo">Cabeçalho obrigatório:</label>
+                <div id="moduleFields"></div>
+                <div class="text-red pt-3">* Campos Obrigatórios</div>
+            </div>
+            <hr>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="arquivo">Selecionar Arquivo (.xlsx)</label>
+                <input type="file" class="form-control" name="arquivo" id="arquivo" 
+                    required accept=".xlsx">
+            </div>
+        </div>
+        <div class="col-md-12 mt-2">
+            <button type="submit" class="btn btn-success btn_post py-3" style="height: 100%; width: 100%;">
+                <i class="fa fa-upload" style="font-size: 30px;"></i> INICIAR IMPORTAÇÃO
+            </button>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function(){
+        $('#formImport').validate({
+            submitHandler: function( form ){
+                var file_data = $('#arquivo').prop('files')[0];   
+                var form_data = new FormData();              
+
+                form_data.append('file', file_data);
+                form_data.append('module', $("#module").val());
+
+                $(".btn_post").attr('disabled', true);
+                $("#modalMidLoader").show();
+
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo baseUrl . 'painel/importar/envia-dados'; ?>",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: form_data,
+                    dataType: 'json',
+                    async: true
+                }).done(function(data) {
+                    showAlert(data.type, data.title, data.msg, data.pos);
+                    $("#modalMidLoader").hide();   
+                    $("#modalMid").modal('hide');
+                    $(".btn_post").attr('disabled', false);
+
+                    openModule('importar');
+                }).fail(function() {
+                    showInternalErrorAlert(); 
+                    $("#modalMidLoader").hide();   
+                    $(".btn_post").attr('disabled', false);
+                });
+            }
+        });
+    });
+
+    function showImportModel() {
+        let option = $("#module").val();
+
+        if (option === 'categorias') {
+            $("#moduleFields").html('Nome* | Subcategorias');
+            $("#moduleFieldsBox").show();
+        } else if (option === 'clientes') {
+            $("#moduleFields").html('Nome* | Email* | Telefone | Celular | CEP | Endereço | Número | Complemento | Bairro | Cidade | UF');
+            $("#moduleFieldsBox").show();
+        } else if (option === 'colaboradores') {
+            $("#moduleFields").html('Nome* | CPF | CNPJ | Cargo* | Nível Acesso* | Telefone | Celular | WhatApp | Email* | CEP | Endereço | Número | Complemento | Bairro | Cidade | UF');
+            $("#moduleFieldsBox").show();
+        } else {
+            $("#moduleFieldsBox").hide();
+        }
+    }
+</script>

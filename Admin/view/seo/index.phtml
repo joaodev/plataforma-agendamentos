@@ -1,0 +1,195 @@
+<?php
+$entity = $this->view->entity;
+
+$canView = $_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('seo'));
+$canUpdate = $_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('update'), $this->moduleCodes('seo'));
+?>
+<?php if ($canView) : ?>
+    <section class="content-header mt-5">
+        <div class="container-fluid mt-2">
+            <div class="row mb-2">
+                <div class="col-11">
+                    <h1 style="position: relative; top: 6px">
+                        <i class="fas fa-globe"></i>
+                        SEO
+                    </h1>
+                </div>
+                <div class="col-1">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo baseUrl . 'painel'; ?>" class="btn btn-outline-primary w-100" title="Página Inical">
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content" style="margin-left: 9px; margin-right: 9px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="post" name="formUpdateSeo" id="formUpdateSeo">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4><span class="fa fa-home"></span> Home</h4>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label for="title">Meta Title</label>
+                                            <input type="text" class="form-control" name="title" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['title']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="description">Meta Description</label>
+                                            <input type="text" class="form-control" name="description" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['description']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <h4><span class="fa fa-pen"></span> Sobre</h4>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label for="about_title">Meta Title</label>
+                                            <input type="text" class="form-control" name="about_title" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['about_title']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="about_description">Meta Description</label>
+                                            <input type="text" class="form-control" name="about_description" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['about_description']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <h4><span class="fa fa-tools"></span> Serviços</h4>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label for="services_title">Meta Title</label>
+                                            <input type="text" class="form-control" name="services_title" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['services_title']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="services_description">Meta Description</label>
+                                            <input type="text" class="form-control" name="services_description" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['services_description']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <h4><span class="fa fa-file"></span> Blog</h4>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label for="blog_title">Meta Title</label>
+                                            <input type="text" class="form-control" name="blog_title" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['blog_title']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="blog_description">Meta Description</label>
+                                            <input type="text" class="form-control" name="blog_description" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['blog_description']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <h4><span class="fa fa-envelope"></span> Fale Conosco</h4>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label for="contact_title">Meta Title</label>
+                                            <input type="text" class="form-control" name="contact_title" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['contact_title']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="contact_description">Meta Description</label>
+                                            <input type="text" class="form-control" name="contact_description" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['contact_description']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <h4><span class="fa fa-envelope"></span> Área do Cliente</h4>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label for="customers_title">Meta Title</label>
+                                            <input type="text" class="form-control" name="customers_title" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['customers_title']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="customers_description">Meta Description</label>
+                                            <input type="text" class="form-control" name="customers_description" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['customers_description']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <h4><span class="fa fa-envelope"></span> Política de Privacidade</h4>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label for="privacy_title">Meta Title</label>
+                                            <input type="text" class="form-control" name="privacy_title" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['privacy_title']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="privacy_description">Meta Description</label>
+                                            <input type="text" class="form-control" name="privacy_description" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['privacy_description']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <h4><span class="fa fa-envelope"></span> Termos de Uso</h4>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label for="useterms_title">Meta Title</label>
+                                            <input type="text" class="form-control" name="useterms_title" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['useterms_title']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="useterms_description">Meta Description</label>
+                                            <input type="text" class="form-control" name="useterms_description" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?> value="<?php echo $entity['useterms_description']; ?>" maxlength="160">
+                                        </div>
+                                    </div>
+                                    <?php if ($canUpdate) : ?>
+                                        <div class="col-md-8 mt-2 mb-2">
+                                            <button type="submit" class="btn btn-success w-100" id="btnSubmit" title="Salvar">
+                                                <i class="fa fa-save pr-1"></i> Salvar
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4 mt-2 mb-2">
+                                            <a href="<?php echo baseUrl . 'painel'; ?>" class="btn btn-outline-primary w-100" title="Página Inicial">
+                                                <i class="fas fa-home pr-1"></i> Início
+                                            </a>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        $(document).ready(function() {
+            $('#formUpdateSeo').validate({
+                submitHandler: function(form) {
+                    let dados = $(form).serialize();
+                    $("#baseLoader").show();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo baseUrl; ?>painel/seo/processa-edicao",
+                        data: dados,
+                        dataType: 'json',
+                        async: true
+                    }).done(function(data) {
+                        showAlert(data.type, data.title, data.msg, data.pos);
+                        $("#baseLoader").hide();
+                    }).fail(function() {
+                        showInternalErrorAlert();
+                        $("#baseLoader").hide();
+                    });
+
+                    return false;
+                }
+            });
+        });
+    </script>
+<?php endif; ?>

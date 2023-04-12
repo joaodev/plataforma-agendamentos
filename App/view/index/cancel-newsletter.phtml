@@ -1,0 +1,37 @@
+<?php $config = $this->getSiteConfig(); ?>
+<div class="inner-banner"
+    style="background-image: url('<?php echo $this->getInternalBanner('file_contact'); ?>'); background-size: cover;">
+    <section class="w3l-breadcrumb">
+        <div class="container">
+            <ul class="breadcrumbs-custom-path">
+                <li class="active" style="font-size: 40px; text-shadow: black 0.1em 0.1em 0.2em;">Newsletter</li>
+            </ul>
+        </div>
+    </section>
+</div>
+<section class="w3l-contact-1 py-5" id="contact">
+    <div class="contacts-9 ">
+        <div class="container">
+            <div class="d-grid contact-view mb-5 pb-lg-5">
+                <div class="map-content-9">
+                    <div class="contactct-fm map-content-9 pl-lg-4">
+                        <div class="contactct-fm-text text-left">
+                            <div class="header-title mb-5 mt-4">
+                                <span class="sub-title">Cancelar Inscrição</span>
+                                <h3 class="hny-title text-left">Email para Cancelamento</h3>
+                            </div>
+                        </div>
+                        <form action="<?php echo baseUrl; ?>cancelar-inscricao" method="post">
+                            <div class="twice">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Email"
+                                    required="">
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary btn-style mt-4">Enviar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>

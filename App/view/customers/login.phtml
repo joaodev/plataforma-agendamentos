@@ -1,0 +1,105 @@
+<link rel="stylesheet" href="<?php echo baseUrl; ?>public/admin/plugins/jquery-toast-plugin/dist/jquery.toast.min.css">
+<div class="inner-banner" style="background-image: url('<?php echo $this->getInternalBanner('file_customers'); ?>'); background-size: cover;">
+  <section class="w3l-breadcrumb">
+    <div class="container">
+      <ul class="breadcrumbs-custom-path">
+      <li class="active" style="font-size: 50px; text-shadow: black 0.1em 0.1em 0.2em;">Login / Cadastro</li>
+      </ul>
+    </div>
+  </section>
+</div>
+<section class="w3l-contact-1 py-5" id="contact">
+    <div class="contacts-9 py-lg-5 py-md-4">
+        <div class="container">
+            <div class="d-grid contact-view mb-5 pb-lg-5">
+                <div class="cont-details">
+                    <div class="contactct-fm map-content-9 pl-lg-4">
+                        <div class="contactct-fm-text text-left">
+                            <div class="header-title mb-md-5 mt-4">
+                                <span class="sub-title">Já possui cadastro?</span>
+                                <h3 class="hny-title text-left">Fazer login</h3>
+                            </div>
+                        </div>
+                        <?php if (!empty($_GET['msg']) && $_GET['msg'] == 'login-invalido'): ?>
+                          <div class="alert alert-danger" role="alert">
+                            Email ou senha incorreto(s), tente novamente.
+                          </div>
+                        <?php endif; ?>
+                        <form action="<?php echo baseUrl; ?>area-clientes/login" method="post" onsubmit="hashPass(this);">
+                            <div class="twice">
+                                <input type="email" class="form-control" name="email" id="email"
+                                    placeholder="Email" required="">
+                            </div>
+                            <div class="twice">
+                                 <input type="password" class="form-control" name="password" id="password"
+                                    placeholder="Senha" required="" minlength="8" maxlength="100">
+                            </div>
+                            <div class="text-left">
+                                <button type="submit" class="btn btn-primary btn-style mt-4 btnLogin">Entrar</button>
+                              <a href="<?php echo baseUrl . 'area-clientes/esqueci-a-senha' ?>" class="pull-right pt-3">Esqueceu a senha?</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="map-content-9">
+                    <div class="contactct-fm map-content-9 pl-lg-4">
+                        <div class="contactct-fm-text text-left">
+                            <div class="header-title mb-md-5 mt-4">
+                                <span class="sub-title">Novo por aqui?</span>
+                                <h3 class="hny-title text-left">Cadastre-se já!</h3>
+                            </div>
+                        </div>
+                        <form action="<?php echo baseUrl; ?>area-clientes/cadastro" method="post" onsubmit="hashPass(this);">
+                            <div class="twice">
+                                <input type="text" class="form-control" name="name" id="name"
+                                    placeholder="Nome completo" required="" value="<?php echo (!empty($_GET['name']) ? $_GET['name'] : ''); ?>">
+                            </div>
+                            <div class="twice">
+                                <input type="email" class="form-control" name="email" id="email"
+                                    placeholder="Email" required="" value="<?php echo (!empty($_GET['email']) ? $_GET['email'] : ''); ?>">
+                            </div>
+                            <div class="twice-two">
+                                <input type="password" class="form-control" name="password" id="password"
+                                    placeholder="Senha" required="" minlength="8" maxlength="100">
+                                <input type="password" class="form-control" name="confirmation" id="confirmation"
+                                    placeholder="Confirme a Senha" required="" minlength="8" maxlength="100">
+                            </div>
+                            <div class="twice">
+                                Leia nossa <a href="<?php echo baseUrl; ?>politica-de-privacidade">Política de Privacidade</a> <br>
+                                Leia nossos <a href="<?php echo baseUrl; ?>termos-de-uso">Termos de Uso</a>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary btn-style mt-4 btnLogin">Realizar cadastro</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="<?php echo baseUrl; ?>public/admin/plugins/jquery/jquery.min.js"></script>
+<script src="<?php echo baseUrl; ?>public/admin/plugins/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
+<script src="<?php echo baseUrl; ?>public/admin/js/alerts.js"></script>
+<script src="<?php echo baseUrl; ?>public/js/md5.min.js"></script>
+<script>
+    function hashPass(form) {
+        if (form.password.value !== '') {
+            form.password.value = md5(form.password.value);
+        }
+
+        if (form.confirmation.value !== '') {
+            form.confirmation.value = md5(form.confirmation.value);
+        }
+    }
+</script>
+<?php if (!empty($_GET['msg']) && $_GET['msg'] == 'cliente-invalido'): ?>
+    <script>
+        showAlert('error', 'Ops!', 'Cliente inválido, tente novamente.', 'top-center');
+    </script>
+<?php endif; ?>
+<?php if (!empty($_GET['msg']) && $_GET['msg'] == 'senhas-incorretas'): ?>
+    <script>
+        showAlert('error', 'Ops!', 'Senhas incorretas, tente novamente.', 'top-center');
+    </script>
+<?php endif; ?>

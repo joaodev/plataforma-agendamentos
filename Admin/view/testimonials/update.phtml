@@ -1,0 +1,160 @@
+<?php if ($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('update'), $this->moduleCodes('testimonials'))): ?>
+    <?php $entity = $this->view->entity; ?>
+    <section class="content-header mt-5">
+        <div class="container-fluid mt-2">
+            <div class="row mb-2">
+                <div class="col-11">
+                    <h1 style="position: relative; top: 5px">
+                        <i class="fas fa-pen-square pr-1"></i>
+                        Depoimento
+                    </h1>
+                </div>
+                <div class="col-1">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item">
+                            <button type="button" class="btn btn-outline-primary" title="Voltar para Depoimentos"
+                                onclick="openModule('depoimentos');" style="width: 100%;">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content" style="margin-left: 9px; margin-right: 9px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="post" name="formUpdateTestimonial" id="formUpdateTestimonial"
+                                enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <?php if (!empty($entity['file'])): ?>
+                                                <div class="text-center">
+                                                    <a href="<?php echo baseUrl . 'public/uploads/testimonials/'
+                                                        . $entity['file']; ?>" data-lightbox="image-1" data-title="<?php echo $entity['file']; ?>">
+                                                        <img src="<?php echo baseUrl . 'public/uploads/testimonials/'
+                                                            . $entity['file']; ?>" alt="" style="width: 30%;">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <input type="checkbox" name="remove_image" id="remove_image" value="1">
+                                                        Remover imagem
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                            <label for="file">Foto</label>
+                                            <input type="file" class="form-control" name="file" id="file">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="name">Nome*</label>
+                                            <input type="text" class="form-control" name="name" id="name" required
+                                                value="<?php echo $entity['name']; ?>" maxlength="30">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="occupation">Profissão / Empresa*</label>
+                                            <input type="text" class="form-control" name="occupation" id="occupation"
+                                                required value="<?php echo $entity['occupation']; ?>" maxlength="20">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="description">Descrição*</label>
+                                            <textarea name="description" id="description" rows="8" class="form-control"
+                                                required><?php echo $entity['description']; ?></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="status">Situação</label>
+                                            <select name="status" id="status_1" class="form-control">
+                                                <option value="1" <?php echo ($entity['status'] == '1' ? 'selected' : ''); ?>>
+                                                    Depoimento ativo</option>
+                                                <option value="0" <?php echo ($entity['status'] == '0' ? 'selected' : ''); ?>>
+                                                    Depoimento inativo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-md-8 mt-2 mb-2">
+                                                <input type="hidden" name="uuid" id="id_depoimentos"
+                                                    value="<?php echo $entity['uuid']; ?>">
+                                                <button type="submit" class="btn btn-success w-100" id="btnSubmit"
+                                                    title="Salvar Depoimento">
+                                                    <i class="fa fa-save pr-1"></i> Salvar
+                                                </button>
+                                            </div>
+                                            <div class="col-md-4 mt-2 mb-2">
+                                                <button type="button" class="btn btn-outline-primary w-100"
+                                                    onclick="openModule('depoimentos');" title="Voltar para Depoimentos">
+                                                    <i class="fas fa-arrow-left pr-1"></i> Voltar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        $(document).ready(function () {
+            $('#formUpdateTestimonial').validate({
+                submitHandler: function () {
+                    let file_data = $('#file').prop('files')[0];
+                    let form_data = new FormData();
+
+                    form_data.append('file', file_data);
+                    form_data.append('name', $("#name").val());
+                    form_data.append('occupation', $("#occupation").val());
+                    form_data.append('description', $("#description").val());
+                    form_data.append('status', $("#status_1").val());
+                    form_data.append('uuid', $("#id_depoimentos").val());
+
+                    if ($('#remove_image').is(':checked')) {
+                        form_data.append('remove_image', $("#remove_image").val());
+                    }
+
+                    $("#baseLoader").show();
+                    $("#btnSubmit").attr('disabled', true);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo baseUrl; ?>painel/depoimentos/processa-edicao",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: form_data,
+                        dataType: 'json',
+                        async: true
+                    }).done(function (data) {
+                        showAlert(data.type, data.title, data.msg, data.pos);
+                        if (data.type === 'success') {
+                            updateTestimonial('<?php echo $entity['uuid']; ?>');
+                        } else {
+                            $("#baseLoader").hide();
+                            $("#btnSubmit").attr('disabled', false);
+                        }
+                    }).fail(function () {
+                        showInternalErrorAlert();
+                        $("#baseLoader").hide();
+                        $("#btnSubmit").attr('disabled', false);
+                    });
+
+                    return false;
+                }
+            });
+        });
+    </script>
+<?php endif; ?>

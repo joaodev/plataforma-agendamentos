@@ -1,0 +1,325 @@
+<?php
+$entity = $this->view->entity;
+
+$canView = $_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('internal-banners'));
+$canUpdate = $_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('update'), $this->moduleCodes('internal-banners'));
+?>
+<?php if ($canView) : ?>
+    <section class="content-header mt-5">
+        <div class="container-fluid mt-2">
+            <div class="row mb-2">
+                <div class="col-11">
+                    <h1 style="position: relative; top: 5px">
+                        <i class="fas fa-image pr-1"></i>
+                        Banners Internos
+                    </h1>
+                </div>
+                <div class="col-1">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo baseUrl . 'painel'; ?>" class="btn btn-outline-primary w-100" title="Página Inical">
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content" style="margin-left: 9px; margin-right: 9px;">
+        <div class="container-fluid">
+            <form method="post" name="formUpdateHome" id="formUpdateHome" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>Página <b>Sobre Nós</b></h4>
+                                <div class="form-group ">
+                                    <?php if (!empty($entity['file_about'])) : ?>
+                                        <a href="<?php echo baseUrl . 'public/uploads/banner/' . $entity['file_about']; ?>" 
+                                            data-lightbox="image-1" data-title="<?php echo $entity['file_about']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/banner/'
+                                                . $entity['file_about']; ?>" alt="file_about" style="width: 100%; margin-bottom: 15px;">
+                                        </a>
+                                        <?php if ($canUpdate) : ?>
+                                            <div class="my-2">
+                                                <input type="checkbox" name="remove_image_about" id="remove_image_about" value="1">
+                                                Remover imagem
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($canUpdate) : ?>
+                                        <input type="file" class="form-control" name="file_about" id="file_about">
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>Página <b>Serviços</b></h4>
+                                <div class="form-group">
+                                    <?php if (!empty($entity['file_services'])) : ?>
+                                        <a href="<?php echo baseUrl . 'public/uploads/banner/' . $entity['file_services']; ?>" 
+                                            data-lightbox="image-1" data-title="<?php echo $entity['file_services']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/banner/'
+                                                . $entity['file_services']; ?>" alt="file_services" style="width: 100%; margin-bottom: 15px;">
+                                        </a>
+                                        <?php if ($canUpdate) : ?>
+                                            <div class="my-2">
+                                                <input type="checkbox" name="remove_image_services" id="remove_image_services" value="1"> Remover imagem
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($canUpdate) : ?>
+                                        <input type="file" class="form-control" name="file_services" id="file_services">
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>Página <b>Imóveis</b></h4>
+                                <div class="form-group">
+                                    <?php if (!empty($entity['file_properties'])) : ?>
+                                        <a href="<?php echo baseUrl . 'public/uploads/banner/' . $entity['file_properties']; ?>" 
+                                            data-lightbox="image-1" data-title="<?php echo $entity['file_properties']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/banner/'
+                                                . $entity['file_properties']; ?>" alt="file_properties" style="width: 100%; margin-bottom: 15px;">
+                                        </a>
+                                        <?php if ($canUpdate) : ?>
+                                            <div class="my-2">
+                                                <input type="checkbox" name="remove_image_properties" id="remove_image_properties" value="1"> Remover imagem
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($canUpdate) : ?>
+                                        <input type="file" class="form-control" name="file_properties" id="file_properties">
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>Página <b>Blog</b></h4>
+                                <div class="form-group">
+                                    <?php if (!empty($entity['file_publications'])) : ?>
+                                        <a href="<?php echo baseUrl . 'public/uploads/banner/' . $entity['file_publications']; ?>" 
+                                            data-lightbox="image-1" data-title="<?php echo $entity['file_publications']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/banner/'
+                                                . $entity['file_publications']; ?>" alt="file_publications" style="width: 100%; margin-bottom: 15px;">
+                                        </a>
+                                        <?php if ($canUpdate) : ?>
+                                            <div class="my-2">
+                                                <input type="checkbox" name="remove_image_publications" id="remove_image_publications" value="1"> Remover imagem
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($canUpdate) : ?>
+                                        <input type="file" class="form-control" name="file_publications" id="file_publications">
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>Página <b>Fale Conosco</b></h4>
+                                <div class="form-group">
+                                    <?php if (!empty($entity['file_contact'])) : ?>
+                                        <a href="<?php echo baseUrl . 'public/uploads/banner/' . $entity['file_contact']; ?>" 
+                                            data-lightbox="image-1" data-title="<?php echo $entity['file_contact']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/banner/'
+                                                . $entity['file_contact']; ?>" alt="file_contact" style="width: 100%; margin-bottom: 15px;">
+                                        </a>
+                                        <?php if ($canUpdate) : ?>
+                                            <div class="my-2">
+                                                <input type="checkbox" name="remove_image_contact" id="remove_image_contact" value="1"> Remover imagem
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($canUpdate) : ?>
+                                        <input type="file" class="form-control" name="file_contact" id="file_contact">
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>Página <b>Área do Cliente</b></h4>
+                                <div class="form-group">
+                                    <?php if (!empty($entity['file_customers'])) : ?>
+                                        <a href="<?php echo baseUrl . 'public/uploads/banner/' . $entity['file_customers']; ?>" 
+                                            data-lightbox="image-1" data-title="<?php echo $entity['file_customers']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/banner/'
+                                                . $entity['file_customers']; ?>" alt="file_customers" style="width: 100%; margin-bottom: 15px;">
+                                        </a>
+                                        <?php if ($canUpdate) : ?>
+                                            <div class="my-2">
+                                                <input type="checkbox" name="remove_image_customers" id="remove_image_customers" value="1"> Remover imagem
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($canUpdate) : ?>
+                                        <input type="file" class="form-control" name="file_customers" id="file_customers">
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>Página <b>Política de Privacidade</b></h4>
+                                <div class="form-group">
+                                    <?php if (!empty($entity['file_politics'])) : ?>
+                                        <a href="<?php echo baseUrl . 'public/uploads/banner/' . $entity['file_politics']; ?>" 
+                                            data-lightbox="image-1" data-title="<?php echo $entity['file_politics']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/banner/'
+                                                . $entity['file_politics']; ?>" alt="file_politics" style="width: 100%; margin-bottom: 15px;">
+                                        </a>
+                                        <?php if ($canUpdate) : ?>
+                                            <div class="my-2">
+                                                <input type="checkbox" name="remove_image_politics" id="remove_image_politics" value="1"> Remover imagem
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($canUpdate) : ?>
+                                        <input type="file" class="form-control" name="file_politics" id="file_politics">
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>Página <b>Termos de Uso</b></h4>
+                                <div class="form-group">
+                                    <?php if (!empty($entity['file_use_terms'])) : ?>
+                                        <a href="<?php echo baseUrl . 'public/uploads/banner/' . $entity['file_use_terms']; ?>" 
+                                            data-lightbox="image-1" data-title="<?php echo $entity['file_use_terms']; ?>">
+                                            <img src="<?php echo baseUrl . 'public/uploads/banner/'
+                                                . $entity['file_use_terms']; ?>" alt="file_use_terms" style="width: 100%; margin-bottom: 15px;">
+                                        </a>
+                                        <?php if ($canUpdate) : ?>
+                                            <div class="my-2">
+                                                <input type="checkbox" name="remove_image_use_terms" id="remove_image_use_terms" value="1"> Remover imagem
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($canUpdate) : ?>
+                                        <input type="file" class="form-control" name="file_use_terms" id="file_use_terms">
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php if ($canUpdate) : ?>
+                        <div class="col-md-8 mt-2 mb-2">
+                            <button type="submit" class="btn btn-success w-100" id="btnSubmit" title="Salvar">
+                                <i class="fa fa-save pr-1"></i> Salvar
+                            </button>
+                        </div>
+                        <div class="col-md-4 mt-2 mb-2">
+                            <a href="<?php echo baseUrl . 'painel'; ?>" class="btn btn-outline-primary w-100" title="Página Inicial">
+                                <i class="fas fa-home pr-1"></i> Início
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </form>
+        </div>
+    </section>
+    <?php if ($canUpdate) : ?>
+        <script>
+            $(document).ready(function() {
+                $('#formUpdateHome').validate({
+                    submitHandler: function() {
+                        let file_about_data = $('#file_about').prop('files')[0];
+                        let file_properties_data = $('#file_properties').prop('files')[0];
+                        let file_publications_data = $('#file_publications').prop('files')[0];
+                        let file_contact_data = $('#file_contact').prop('files')[0];
+                        let file_services_data = $('#file_services').prop('files')[0];
+                        let file_politics_data = $('#file_politics').prop('files')[0];
+                        let file_use_terms_data = $('#file_use_terms').prop('files')[0];
+                        let file_customers_data = $('#file_customers').prop('files')[0];
+                        let form_data = new FormData();
+
+                        form_data.append('file_about', file_about_data);
+                        form_data.append('file_properties', file_properties_data);
+                        form_data.append('file_publications', file_publications_data);
+                        form_data.append('file_contact', file_contact_data);
+                        form_data.append('file_services', file_services_data);
+                        form_data.append('file_politics', file_politics_data);
+                        form_data.append('file_use_terms', file_use_terms_data);
+                        form_data.append('file_customers', file_customers_data);
+
+                        if ($('#remove_image_about').is(':checked')) {
+                            form_data.append('remove_image_about', $("#remove_image_about").val());
+                        }
+
+                        if ($('#remove_image_properties').is(':checked')) {
+                            form_data.append('remove_image_properties', $("#remove_image_properties").val());
+                        }
+
+                        if ($('#remove_image_publications').is(':checked')) {
+                            form_data.append('remove_image_publications', $("#remove_image_publications").val());
+                        }
+
+                        if ($('#remove_image_contact').is(':checked')) {
+                            form_data.append('remove_image_contact', $("#remove_image_contact").val());
+                        }
+
+                        if ($('#remove_image_services').is(':checked')) {
+                            form_data.append('remove_image_services', $("#remove_image_services").val());
+                        }
+
+                        if ($('#remove_image_customers').is(':checked')) {
+                            form_data.append('remove_image_customers', $("#remove_image_customers").val());
+                        }
+
+                        if ($('#remove_image_politics').is(':checked')) {
+                            form_data.append('remove_image_politics', $("#remove_image_politics").val());
+                        }
+
+                        if ($('#remove_image_use_terms').is(':checked')) {
+                            form_data.append('remove_image_use_terms', $("#remove_image_use_terms").val());
+                        }
+
+                        $("#baseLoader").show();
+                        $("#btnSubmit").attr('disabled', true);
+
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo baseUrl; ?>painel/banners-internos/processa-edicao",
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            data: form_data,
+                            dataType: 'json',
+                            async: true
+                        }).done(function(data) {
+                            showAlert(data.type, data.title, data.msg, data.pos);
+                            openModule('banners-internos');
+                        }).fail(function() {
+                            showInternalErrorAlert();
+                            $("#baseLoader").hide();
+                            $("#btnSubmit").attr('disabled', false);
+                        });
+
+                        return false;
+                    }
+                });
+            });
+        </script>
+    <?php endif; ?>
+<?php endif; ?>

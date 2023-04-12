@@ -1,0 +1,137 @@
+<?php if ($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('create'), $this->moduleCodes('banners'))): ?>
+    <section class="content-header mt-5">
+        <div class="container-fluid mt-2">
+            <div class="row mb-2">
+                <div class="col-11">
+                    <h1 style="position: relative; top: 5px">
+                        <i class="fas fa-plus-square pr-1"></i>
+                        Banner
+                    </h1>
+                </div>
+                <div class="col-1">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item">
+                            <button type="button" class="btn btn-outline-primary" title="Voltar para Banners"
+                                onclick="openModule('banner');" style="width: 100%;">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content" style="margin-left: 9px; margin-right: 9px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="post" name="formCreateBanner" id="formCreateBanner" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="file">Imagem*</label>
+                                            <input type="file" class="form-control" name="file" id="file" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="title">Título</label>
+                                            <input type="text" class="form-control" name="title" id="title" maxlength="40">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="caption">Legenda</label>
+                                            <input type="text" class="form-control" name="caption" id="caption" maxlength="120">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="title_link_1">Título do Botão 1</label>
+                                            <input type="text" class="form-control" name="title_link_1" id="title_link_1" maxlength="20">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="title_link_1">Link do Botão 1</label>
+                                            <input type="text" class="form-control" name="link_1" id="link_1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="title_link_2">Título do Botão 2</label>
+                                            <input type="text" class="form-control" name="title_link_2" id="title_link_2" maxlength="20">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="link_2">Link do Botão 2</label>
+                                            <input type="text" class="form-control" name="link_2" id="link_2">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 mt-2 mb-2">
+                                        <button type="submit" class="btn btn-success w-100" id="btnSubmit"
+                                            title="Salvar Banner">
+                                            <i class="fa fa-save pr-1"></i> Salvar
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4 mt-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary w-100"
+                                            onclick="openModule('banner');" title="Voltar para Banners">
+                                            <i class="fas fa-arrow-left pr-1"></i> Voltar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        $(document).ready(function () {
+            $('#formCreateBanner').validate({
+                submitHandler: function () {
+                    let file_data = $('#file').prop('files')[0];
+                    let form_data = new FormData();
+
+                    form_data.append('file', file_data);
+                    form_data.append('title', $("#title").val());    
+                    form_data.append('caption', $("#caption").val());    
+                    form_data.append('title_link_1', $("#title_link_1").val());    
+                    form_data.append('link_1', $("#link_1").val());    
+                    form_data.append('title_link_2', $("#title_link_2").val());    
+                    form_data.append('link_2', $("#link_2").val());    
+
+                    $("#baseLoader").show();
+                    $("#btnSubmit").attr('disabled', true);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo baseUrl; ?>painel/banner/processa-cadastro",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: form_data,
+                        dataType: 'json',
+                        async: true
+                    }).done(function (data) {
+                        showAlert(data.type, data.title, data.msg, data.pos);
+                        $("#baseLoader").hide();
+                        $("#btnSubmit").attr('disabled', false);
+                        $('#formCreateBanner').trigger("reset");
+                    }).fail(function () {
+                        showInternalErrorAlert();
+                        $("#baseLoader").hide();
+                        $("#btnSubmit").attr('disabled', false);
+                    });
+
+                    return false;
+                }
+            });
+        });
+    </script>
+<?php endif; ?>

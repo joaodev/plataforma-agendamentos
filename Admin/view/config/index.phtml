@@ -1,0 +1,440 @@
+<?php
+$entity = $this->view->entity;
+$role = $_SESSION['ROLE'];
+
+$canView = $_SESSION['ROLE_ADM'] == '1' || $this->acl($role, $this->resourceCodes('view'), $this->moduleCodes('configs'));
+$canUpdate = $_SESSION['ROLE_ADM'] == '1' || $this->acl($role, $this->resourceCodes('update'), $this->moduleCodes('configs'));
+?>
+<?php if ($canView): ?>
+    <section class="content-header mt-5">
+        <div class="container-fluid mt-2">
+            <div class="row mb-2">
+                <div class="col-11">
+                    <h1 style="position: relative; top: 5px">
+                        <i class="fas fa-cogs pr-1"></i>
+                        Configurações
+                    </h1>
+                </div>
+                <div class="col-1">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo baseUrl . 'painel'; ?>" class="btn btn-outline-primary w-100"
+                                title="Página Inical">
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content" style="margin-left: 9px; margin-right: 9px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="post" name="formUpdateConfig" id="formUpdateConfig" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="logo_site" class="form-control-label">Logo - Site</label><br>
+                                        <?php if (!empty($entity['logo_site'])): ?>
+                                            <div class="mb-3">
+                                                <a href="<?php echo baseUrl . 'public/uploads/logo/'
+                                                    . $entity['logo_site']; ?>" data-lightbox="image-1"
+                                                    data-title="<?php echo $entity['logo_site']; ?>">
+                                                    <img src="<?php echo baseUrl . 'public/uploads/logo/'
+                                                        . $entity['logo_site']; ?>" alt="" style="max-height: 100px;">
+                                                </a>
+                                                <?php if ($canUpdate): ?>
+                                                    <div class="my-2">
+                                                        <input type="checkbox" name="remove_image_site" id="remove_image_site"
+                                                            value="1"> Remover imagem
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($canUpdate): ?>
+                                            <input type="file" class="form-control" name="logo_site" id="logo_site">
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="" class="form-control-label">Logo - Painel</label><br>
+                                        <?php if (!empty($entity['logo'])): ?>
+                                            <div class="mb-3">
+                                                <a href="<?php echo baseUrl . 'public/uploads/logo/'
+                                                    . $entity['logo']; ?>" data-lightbox="image-1"
+                                                    data-title="<?php echo $entity['logo']; ?>">
+                                                    <img src="<?php echo baseUrl . 'public/uploads/logo/'
+                                                        . $entity['logo']; ?>" alt="" style="max-height: 100px;">
+                                                </a>
+                                                <?php if ($canUpdate): ?>
+                                                    <div class="my-2">
+                                                        <input type="checkbox" name="remove_image_logo" id="remove_image_logo"
+                                                            value="1"> Remover imagem
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($canUpdate): ?>
+                                            <input type="file" class="form-control" name="logo" id="logo">
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="col-12">
+                                        <hr>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="" class="form-control-label">Ícone</label><br>
+                                        <?php if (!empty($entity['logo_icon'])): ?>
+                                            <div class="mb-3">
+                                                <a href="<?php echo baseUrl . 'public/uploads/logo/'
+                                                    . $entity['logo_icon']; ?>" data-lightbox="image-1"
+                                                    data-title="<?php echo $entity['logo_icon']; ?>">
+                                                    <img src="<?php echo baseUrl . 'public/uploads/logo/'
+                                                        . $entity['logo_icon']; ?>" alt="" style="max-height: 100px;">
+                                                </a>
+                                                <?php if ($canUpdate): ?>
+                                                    <div class="my-2">
+                                                        <input type="checkbox" name="remove_image_icon" id="remove_image_icon"
+                                                            value="1"> Remover imagem
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($canUpdate): ?>
+                                            <input type="file" class="form-control" name="logo_icon" id="logo_icon">
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="" class="form-control-label">Marca D'água</label><br>
+                                        <?php if (!empty($entity['logo_watermark'])): ?>
+                                            <div class="mb-3">
+                                                <a href="<?php echo baseUrl . 'public/uploads/logo/'
+                                                    . $entity['logo_watermark']; ?>" data-lightbox="image-1"
+                                                    data-title="<?php echo $entity['logo_watermark']; ?>">
+                                                    <img src="<?php echo baseUrl . 'public/uploads/logo/'
+                                                        . $entity['logo_watermark']; ?>" alt=""
+                                                        style="max-height: 100px;">
+                                                </a>
+                                                <?php if ($canUpdate): ?>
+                                                    <div class="my-2">
+                                                        <input type="checkbox" name="remove_image_watermark"
+                                                            id="remove_image_watermark" value="1"> Remover imagem
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($canUpdate): ?>
+                                            <input type="file" class="form-control" name="logo_watermark" id="logo_watermark">
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="primary_color" class="form-control-label">Cor Primária</label><br>
+                                        <input type="text" name="primary_color" id="primary_color" maxlength="7"
+                                            value="<?php echo $entity['primary_color']; ?>" readonly />
+                                        <?php if ($canUpdate): ?>
+                                            <div id="colorpicker_primary"></div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="secondary_color" class="form-control-label">Cor Secundária</label><br>
+                                        <input type="text" name="secondary_color" id="secondary_color" maxlength="7"
+                                            value="<?php echo $entity['secondary_color']; ?>" readonly />
+                                        <?php if ($canUpdate): ?>
+                                            <div id="colorpicker_secondary"></div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <label for="site_title" class="col-sm-2 form-control-label">Título
+                                        <?php echo ($canUpdate) ? '*' : ''; ?>
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="site_title" id="site_title"
+                                            maxlength="100" value="<?php echo $entity['site_title']; ?>" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?>>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <label for="email" class="col-sm-2 form-control-label">Email
+                                        <?php echo ($canUpdate) ? '*' : ''; ?>
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" name="email" id="email" maxlength="100"
+                                            value="<?php echo $entity['email']; ?>" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?>>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="phone" class="col-sm-2 form-control-label">Telefone</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="phone" id="phone"
+                                            value="<?php echo $entity['phone']; ?>" <?php echo ($canUpdate) ? '' : 'readonly'; ?>>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="cellphone" class="col-sm-2 form-control-label">Celular (Whatsapp)
+                                        <?php echo ($canUpdate) ? '*' : ''; ?>
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="cellphone" id="cellphone"
+                                            value="<?php echo $entity['cellphone']; ?>" <?php echo ($canUpdate) ? 'required' : 'readonly'; ?>>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <hr>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="full_address" class="col-sm-2 form-control-label">Endereço completo</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="full_address" id="full_address"
+                                            value="<?php echo $entity['full_address']; ?>" <?php echo ($canUpdate) ? '' : 'readonly'; ?>>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <hr>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="facebook" class="col-sm-2 form-control-label">Facebook</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="facebook" id="facebook"
+                                            value="<?php echo $entity['facebook']; ?>" <?php echo ($canUpdate) ? '' : 'readonly'; ?>>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="instagram" class="col-sm-2 form-control-label">Instagram</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="instagram" id="instagram"
+                                            value="<?php echo $entity['instagram']; ?>" <?php echo ($canUpdate) ? '' : 'readonly'; ?>>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="twitter" class="col-sm-2 form-control-label">Twitter</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="twitter" id="twitter"
+                                            value="<?php echo $entity['twitter']; ?>" <?php echo ($canUpdate) ? '' : 'readonly'; ?>>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="youtube" class="col-sm-2 form-control-label">YouTube</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="youtube" id="youtube"
+                                            value="<?php echo $entity['youtube']; ?>" <?php echo ($canUpdate) ? '' : 'readonly'; ?>>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="tiktok" class="col-sm-2 form-control-label">TikTok</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="tiktok" id="tiktok"
+                                            value="<?php echo $entity['tiktok']; ?>" <?php echo ($canUpdate) ? '' : 'readonly'; ?>>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="linkedin" class="col-sm-2 form-control-label">Linkedin</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="linkedin" id="linkedin"
+                                            value="<?php echo $entity['linkedin']; ?>" <?php echo ($canUpdate) ? '' : 'readonly'; ?>>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <hr>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="google_maps" class="col-sm-2 form-control-label">Google Maps</label>
+                                    <div class="col-sm-10">
+                                        <textarea name="google_maps" id="google_maps" class="form-control" <?php echo ($canUpdate) ? '' : 'readonly'; ?>
+                                            rows="5"><?php echo $entity['google_maps']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="google_analytics" class="col-sm-2 form-control-label">Google
+                                        Analytics</label>
+                                    <div class="col-sm-10">
+                                        <textarea name="google_analytics" id="google_analytics" class="form-control" <?php echo ($canUpdate) ? '' : 'readonly'; ?>
+                                            rows="5"><?php echo $entity['google_analytics']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="file_menu" class="form-control-label">Imagem de Fundo para o
+                                            Menu</label><br>
+                                        <?php if (!empty($entity['file_menu'])): ?>
+                                            <div class="mb-3 text-center">
+                                                <a href="<?php echo baseUrl . 'public/uploads/menu/'
+                                                    . $entity['file_menu']; ?>" data-lightbox="image-1"
+                                                    data-title="<?php echo $entity['file_menu']; ?>">
+                                                    <img src="<?php echo baseUrl . 'public/uploads/menu/'
+                                                        . $entity['file_menu']; ?>" alt="" style="max-height: 250px;">
+                                                </a>
+                                                <?php if ($canUpdate): ?>
+                                                    <div class="my-2">
+                                                        <input type="checkbox" name="remove_image_menu" id="remove_image_menu"
+                                                            value="1"> Remover imagem
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($canUpdate): ?>
+                                            <input type="file" class="form-control" name="file_menu" id="file_menu">
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="col-md-6 ">
+                                        <label for="file_footer" class="form-control-label">Imagem de Fundo para o
+                                            Rodapé</label><br>
+                                        <?php if (!empty($entity['file_footer'])): ?>
+                                            <div class="mb-3">
+                                                <a href="<?php echo baseUrl . 'public/uploads/footer/'
+                                                    . $entity['file_footer']; ?>" data-lightbox="image-1"
+                                                    data-title="<?php echo $entity['file_footer']; ?>">
+                                                    <img src="<?php echo baseUrl . 'public/uploads/footer/'
+                                                        . $entity['file_footer']; ?>" alt="" style="width: 100%;">
+                                                </a>
+                                                <?php if ($canUpdate): ?>
+                                                    <div class="my-2">
+                                                        <input type="checkbox" name="remove_image_footer" id="remove_image_footer"
+                                                            value="1"> Remover imagem
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($canUpdate): ?>
+                                            <input type="file" class="form-control" name="file_footer" id="file_footer">
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <?php if ($canUpdate): ?>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <hr>
+                                        </div>
+                                        <div class="col-md-8 mt-2 mb-2">
+                                            <button type="submit" class="btn btn-success w-100" id="btnSubmit"
+                                                title="Atualizar Configurações">
+                                                <i class="fa fa-save pr-1"></i> Atualizar Configurações
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4 mt-2 mb-2">
+                                            <a href="<?php echo baseUrl . 'painel'; ?>" class="btn btn-outline-primary w-100"
+                                                title="Página Inicial">
+                                                <i class="fas fa-home pr-1"></i> Início
+                                            </a>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <link rel="stylesheet" href="<?php echo baseUrl; ?>public/admin/farbtastic/farbtastic.css" type="text/css" />
+    <script type="text/javascript" src="<?php echo baseUrl; ?>public/admin/farbtastic/farbtastic.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#colorpicker_primary').farbtastic('#primary_color');
+            $('#colorpicker_secondary').farbtastic('#secondary_color');
+        });
+    </script>
+    <?php if ($canUpdate): ?>
+        <script>
+            $(document).ready(function () {
+                $("#phone").mask("(99)9999-9999");
+                $("#cellphone").mask("(99)99999-9999");
+
+                $('#formUpdateConfig').validate({
+                    submitHandler: function () {
+                        let logo = $('#logo').prop('files')[0];
+                        let logo_icon = $('#logo_icon').prop('files')[0];
+                        let logo_site = $('#logo_site').prop('files')[0];
+                        let logo_watermark = $('#logo_watermark').prop('files')[0];
+                        let file_footer = $('#file_footer').prop('files')[0];
+                        let file_menu = $('#file_menu').prop('files')[0];
+                        let form_data = new FormData();
+
+                        form_data.append('uuid', '<?php echo $entity['uuid']; ?>');
+                        form_data.append('site_title', $("#site_title").val());
+                        form_data.append('email', $("#email").val());
+                        form_data.append('phone', $("#phone").val());
+                        form_data.append('cellphone', $("#cellphone").val());
+                        form_data.append('full_address', $("#full_address").val());
+
+                        form_data.append('facebook', $("#facebook").val());
+                        form_data.append('instagram', $("#instagram").val());
+                        form_data.append('twitter', $("#twitter").val());
+                        form_data.append('linkedin', $("#linkedin").val());
+                        form_data.append('youtube', $("#youtube").val());
+                        form_data.append('tiktok', $("#tiktok").val());
+
+                        form_data.append('google_maps', $("#google_maps").val());
+                        form_data.append('google_analytics', $("#google_analytics").val());
+
+                        form_data.append('primary_color', $("#primary_color").val());
+                        form_data.append('secondary_color', $("#secondary_color").val());
+
+                        form_data.append('logo', logo);
+                        form_data.append('logo_icon', logo_icon);
+                        form_data.append('logo_site', logo_site);
+                        form_data.append('logo_watermark', logo_watermark);
+                        form_data.append('file_footer', file_footer);
+                        form_data.append('file_menu', file_menu);
+
+                        if ($('#remove_image_logo').is(':checked')) {
+                            form_data.append('remove_image_logo', $("#remove_image_logo").val());
+                        }
+
+                        if ($('#remove_image_icon').is(':checked')) {
+                            form_data.append('remove_image_icon', $("#remove_image_icon").val());
+                        }
+
+                        if ($('#remove_image_site').is(':checked')) {
+                            form_data.append('remove_image_site', $("#remove_image_site").val());
+                        }
+
+                        if ($('#remove_image_footer').is(':checked')) {
+                            form_data.append('remove_image_footer', $("#remove_image_footer").val());
+                        }
+
+                        if ($('#remove_image_menu').is(':checked')) {
+                            form_data.append('remove_image_menu', $("#remove_image_menu").val());
+                        }
+
+                        if ($('#remove_image_watermark').is(':checked')) {
+                            form_data.append('remove_image_watermark', $("#remove_image_watermark").val());
+                        }
+
+                        $("#baseLoader").show();
+                        $("#btnSubmit").attr('disabled', true);
+
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo baseUrl; ?>painel/configuracoes/processa-edicao",
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            data: form_data,
+                            dataType: 'json',
+                            async: true
+                        }).done(function (data) {
+                            showAlert(data.type, data.title, data.msg, data.pos);
+                            window.location.href = "<?php echo baseUrl; ?>painel?mod=configuracoes";
+                        }).fail(function () {
+                            showInternalErrorAlert();
+                            $("#baseLoader").hide();
+                            $("#btnSubmit").attr('disabled', false);
+                        });
+
+                        return false;
+                    }
+                });
+            });
+        </script>
+    <?php endif; ?>
+<?php endif; ?>

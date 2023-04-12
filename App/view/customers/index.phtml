@@ -1,0 +1,30 @@
+<?php 
+$config = $this->getSiteConfig();
+?>
+<div class="inner-banner" style="background-image: url('<?php echo $this->getInternalBanner('file_customers'); ?>'); background-size: cover;">
+  <section class="w3l-breadcrumb">
+    <div class="container">
+      <ul class="breadcrumbs-custom-path">
+        <li class="active" style="font-size: 50px; text-shadow: black 0.1em 0.1em 0.2em;">Área do Cliente</li>
+      </ul>
+    </div>
+  </section>
+</div>
+<section class="w3l-contact-1 py-5" id="contact">
+    <div class="contacts-9 py-lg-5 py-md-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    Olá, <?php echo $_SESSION['CND_NAME']; ?>
+                    <a href="<?php echo baseUrl . 'area-clientes/logout' ?>" style="float: right;">Encerrar sessão</a>
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <a href="<?php echo baseUrl . 'area-clientes/meus-dados'; ?>" class="btn btn-primary btn-lg py-5" 
+                      style="width: 100%;  font-size: 30px; border-radius: 10px; border: 2px solid <?php echo $config['secondary_color'] ?>">
+                      <span class="fa fa-user" style="font-size: 50px;"></span> <br> Editar Perfil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>    

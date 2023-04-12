@@ -1,0 +1,70 @@
+<form method="post" name="formCreateBlogSubcategory" id="formCreateBlogSubcategory">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="name">Categoria</label>
+                <input type="text" class="form-control" disabled value="<?php echo $this->view->category['name']; ?>">
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="name">Nome*</label>
+                <input type="text" class="form-control" name="name" required maxlength="150"
+                    placeholder="Nome da Subcategoria">
+            </div>
+        </div>
+        <div class="col-md-12 mt-3 mb-2">
+            <input type="hidden" name="category_uuid" value="<?php echo $this->view->category['uuid']; ?>">
+            <button type="submit" class="btn btn-success w-100" id="btnSubmitSubcategory" title="Salvar Subcategoria">
+                <i class="fa fa-save pr-1"></i> Salvar
+            </button>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $('#formCreateBlogSubcategory').validate({
+            rules: {
+                name: {
+                    remote: {
+                        type: "post",
+                        url: "<?php echo baseUrl; ?>painel/subcategorias/valor-existente",
+                    }
+                },
+            },
+            messages: {
+                name: {
+                    remote: "Subcategoria já cadastrada"
+                },
+            },
+            submitHandler: function (form) {
+                let dados = $(form).serialize();
+
+                $("#modalGreenMidLoader").show();
+                $("#btnSubmitSubcategory").show('disabled', true);
+
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo baseUrl; ?>painel/subcategorias/processa-cadastro",
+                    data: dados,
+                    dataType: 'json',
+                    async: true
+                }).done(function (data) {
+                    showAlert(data.type, data.title, data.msg, data.pos);
+                    if (data.type === 'success') {
+                        $("#subcategory_uuid").append('<option value="' + data.uuid + '" selected>' + data.name + '</option>');
+                        $("#modalGreenMid").modal('hide');
+                    }
+
+                    $("#btnSubmitSubcategory").attr('disabled', false);
+                }).fail(function () {
+                    showInternalErrorAlert();
+                    $("#modalGreenMidLoader").hide();
+                    $("#btnSubmitSubcategory").attr('disabled', false);
+                });
+
+                return false;
+            }
+        });
+    });
+</script>

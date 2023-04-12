@@ -1,0 +1,52 @@
+<?php
+$seo = $this->getSiteSeo();
+$config = $this->getSiteConfig();
+$data = $this->view->data;
+?>
+<div class="inner-banner" style="background-image: url('<?php echo $this->getInternalBanner('file_services'); ?>'); background-size: cover;">
+    <section class="w3l-breadcrumb">
+        <div class="container">
+            <ul class="breadcrumbs-custom-path">
+                <li>
+                    <h1 style=" color: white; font-size: 40px;"><?php echo $seo['services_title']; ?></h1>
+                    <div class="mt-2">
+                        <span class="fa fa-chevron-right mx-2" aria-hidden="true"></span> <?php echo $seo['services_description']; ?>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+<section class="w3l-blogpost-content py-5">
+    <div class="container pt-md-3">
+        <div class="row">
+            <?php foreach ($data as $entity) :
+                $file = $this->getPostFile($entity['uuid']);
+            ?>
+                <div class=" col-md-6 col-lg-4 item text-center mb-5">
+                    <div class="card">
+                        <div class="card-body" style="padding: 0">
+                            <div class="text-center my-2">
+                                <a href="<?php echo baseUrl . 'servico?s=' . $entity['slug']; ?>">
+                                    <h5><?php echo $entity['title']; ?></h5>
+                                </a>
+                            </div>
+                            <?php if (!empty($file)) : ?>
+                                <a href="<?php echo baseUrl . 'servico?s=' . $entity['slug']; ?>">
+                                    <img src="<?php echo baseUrl . 'public/uploads/services/' . $file; ?>" alt="<?php echo $entity['title']; ?>" class="radius-image img-fluid" style="box-shadow: 0 0 0.5em <?php echo $config['secondary_color'] ?>;">
+                                </a>
+                            <?php else : ?>
+                                <a href="<?php echo baseUrl . 'servico?s=' . $entity['slug']; ?>">
+                                    <img src="<?php echo baseUrl . 'public/uploads/semfoto.png'; ?>" alt="<?php echo $entity['title']; ?>" class="radius-image img-fluid" style="box-shadow: 0 0 0.5em <?php echo $config['secondary_color'] ?>;">
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            <?php if (empty($data)) : ?>
+                <div class="col-md-12 mb-5 text-center">Não há serviços para serem listados.</div>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>

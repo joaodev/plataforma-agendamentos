@@ -1,0 +1,208 @@
+<?php if ($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('blog'))): ?>
+    <?php $entity = $this->view->entity; ?>
+    <section class="content-header mt-5">
+        <div class="container-fluid mt-2">
+            <div class="row mb-2">
+                <div class="col-11">
+                    <h1 style="position: relative; top: 5px">
+                        <i class="fas fa-info-circle pr-1"></i>
+                        Publicação
+                    </h1>
+                </div>
+                <div class="col-1">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item">
+                            <button type="button" class="btn btn-outline-primary" title="Voltar para Blog"
+                                onclick="openModule('blog');" style="width: 100%;">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content" style="margin-left: 9px; margin-right: 9px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?php if (!empty($this->view->files)): ?>
+                                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                            <div class="carousel-inner">
+                                                <?php $i = 0; ?>
+                                                <?php foreach ($this->view->files as $file): ?>
+                                                    <?php $i++; ?>
+                                                    <div class="carousel-item <?php echo ($i == 1) ? 'active' : ''; ?>">
+                                                        <a href="<?php echo baseUrl . 'public/uploads/blog/' . $entity['uuid'] . '/' . $file['file']; ?>" 
+                                                            data-lightbox="image-1" data-title="<?php echo $file['file']; ?>">
+                                                            <img src="<?php echo baseUrl . 'public/uploads/blog/' . $entity['uuid'] . '/' . $file['file']; ?>"
+                                                                class="d-block w-100" alt="imagem_post" style="width: 100%;">
+                                                        </a>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                            <?php if (count($this->view->files) > 1): ?>
+                                                <button class="carousel-control-prev" type="button"
+                                                    data-target="#carouselExampleControls" data-slide="prev"
+                                                    style="background: transparent; border: 0;">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Previous</span>
+                                                </button>
+                                                <button class="carousel-control-next" type="button"
+                                                    data-target="#carouselExampleControls" data-slide="next"
+                                                    style="background: transparent; border: 0;">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Next</span>
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <p class="text-center mt-3">Nenhuma imagem enviada</p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 text-center mb-3">
+                                    <?php if ($entity['status'] == '1'): ?>
+                                        <i class="fa fa-circle pr-1" style="color: green;"></i> Publicação ativa no site
+                                    <?php endif; ?>
+                                    <?php if ($entity['status'] == '0'): ?>
+                                        <i class="fa fa-circle pr-1" style="color: red;"></i> Publicação inativa no site
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group text-center">
+                                        <label for="source_link">Publicada por:</label>
+                                        <p>
+                                            <?php echo !empty($entity['author']) ? $entity['author'] : 'Nao informado'; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 text-center">
+                                    <span>Cadastrada em:</span>
+                                    <b>
+                                        <?php echo $this->formatDateTime($entity['created_at']); ?>
+                                    </b>
+                                </div>
+                                <div class="col-md-12 text-center">
+                                    <?php if (!empty($entity['updated_at'])): ?>
+                                        <span>Atualizada em:</span>
+                                        <b>
+                                            <?php echo $this->formatDateTime($entity['updated_at']); ?>
+                                        </b>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="name">Título:</label>
+                                        <p>
+                                            <?php echo $entity['title']; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="subtitle">Subtítulo:</label>
+                                        <p>
+                                            <?php echo $entity['subtitle']; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="category">Categoria:</label>
+                                        <p>
+                                            <?php echo $entity['category']; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="subcategory">Subcategoria:</label>
+                                        <p>
+                                            <?php echo !empty($entity['subcategory']) ? $entity['subcategory'] : 'Nao informada'; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="subcategory_uuid">Descrição:</label>
+                                        <p>
+                                            <?php echo !empty($entity['description']) ? $entity['description'] : 'Nao informada'; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="source_title">Fonte:</label>
+                                        <p>
+                                            <?php echo !empty($entity['source_title']) ? $entity['source_title'] : 'Nao informada'; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="source_link">Url Fone:</label>
+                                        <p>
+                                            <?php echo !empty($entity['source_link']) ? $entity['source_link'] : 'Nao informada'; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4 mt-2 mb-2">
+                                            <?php if ($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('delete'), $this->moduleCodes('blog'))): ?>
+                                                <button type="button" class="btn btn-outline-danger"
+                                                    onclick="deleteBlog('<?php echo $entity['uuid']; ?>');" style="width: 100%;"
+                                                    title="Remover Publicação">
+                                                    <i class="fa fa-trash"></i> Remover
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="col-md-4 mt-2 mb-2">
+                                            <?php if ($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('update'), $this->moduleCodes('blog'))): ?>
+                                                <button type="button" class="btn btn-outline-success"
+                                                    onclick="updateBlog('<?php echo $entity['uuid']; ?>');" style="width: 100%;"
+                                                    title="Editar Publicação">
+                                                    <i class="fa fa-pen pr-1"></i> Editar
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="col-md-4 mt-2 mb-2">
+                                            <button type="button" class="btn btn-outline-primary"
+                                                onclick="openModule('blog');" style="width: 100%;" title="Voltar para Blog">
+                                                <i class="fas fa-arrow-left pr-1"></i> Voltar
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+<?php endif; ?>

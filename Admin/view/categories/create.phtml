@@ -1,0 +1,122 @@
+<?php if ($_SESSION['ROLE_ADM'] == '1' || $this->acl($_SESSION['ROLE'], $this->resourceCodes('create'), $this->moduleCodes('categories'))): ?>
+    <section class="content-header mt-5">
+        <div class="container-fluid mt-2">
+            <div class="row mb-2">
+                <div class="col-11">
+                    <h1 style="position: relative; top: 5px">
+                        <i class="fas fa-plus-square pr-1"></i>
+                        Categoria
+                    </h1>
+                </div>
+                <div class="col-1">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item">
+                            <button type="button" class="btn btn-outline-primary" title="Voltar para Categorias"
+                                onclick="openModule('categorias');" style="width: 100%;">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content" style="margin-left: 9px; margin-right: 9px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="post" name="formCreateCategory" id="formCreateCategory"
+                                enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label for="name">Nome da Categoria*</label>
+                                            <input type="text" class="form-control" name="name" id="name" required
+                                                maxlength="150">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="name">Seção*</label>
+                                            <select name="cat_type" id="cat_type" class="form-control">
+                                                <option value="1">Imóveis</option>
+                                                <option value="2">Blog</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-md-8 mt-2 mb-2">
+                                                <button type="submit" class="btn btn-success w-100" id="btnSubmit"
+                                                    title="Salvar Categoria">
+                                                    <i class="fa fa-save pr-1"></i> Salvar
+                                                </button>
+                                            </div>
+                                            <div class="col-md-4 mt-2 mb-2">
+                                                <button type="button" class="btn btn-outline-primary w-100"
+                                                    onclick="openModule('categorias');" title="Voltar para Categorias">
+                                                    <i class="fas fa-arrow-left pr-1"></i> Voltar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        $(document).ready(function () {
+            $('#formCreateCategory').validate({
+                rules: {
+                    name: {
+                        remote: {
+                            type: "post",
+                            url: "<?php echo baseUrl; ?>painel/categorias/valor-existente",
+                        }
+                    },
+                },
+                messages: {
+                    name: {
+                        remote: "Categoria já cadastrada"
+                    },
+                },
+                submitHandler: function () {
+                    let form_data = new FormData();
+                    form_data.append('name', $("#name").val());
+                    form_data.append('cat_type', $("#cat_type").val());
+
+                    $("#baseLoader").show();
+                    $("#btnSubmit").attr('disabled', true);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo baseUrl; ?>painel/categorias/processa-cadastro",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: form_data,
+                        dataType: 'json',
+                        async: true
+                    }).done(function (data) {
+                        showAlert(data.type, data.title, data.msg, data.pos);
+                        $("#baseLoader").hide();
+                        $("#btnSubmit").attr('disabled', false);
+                        $('#formCreateCategory').trigger("reset");
+                    }).fail(function () {
+                        showInternalErrorAlert();
+                        $("#baseLoader").hide();
+                        $("#btnSubmit").attr('disabled', false);
+                    });
+
+                    return false;
+                }
+            });
+        });
+    </script>
+<?php endif; ?>

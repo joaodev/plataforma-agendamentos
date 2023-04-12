@@ -1,0 +1,6 @@
+<option value="">Todas</option>
+<?php foreach ($this->view->data as $subcategory): ?>
+    <option value="<?php echo ($subcategory['uuid']); ?>" <?php echo (!empty($_POST['subcategorySlug']) && ($_POST['subcategorySlug']) == $subcategory['slug']) ? 'selected' : ''; ?>>
+        <?php echo $subcategory['name']; ?>
+    </option>
+<?php endforeach; ?>

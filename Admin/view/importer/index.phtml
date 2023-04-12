@@ -1,0 +1,178 @@
+<?php
+$data = $this->view->data;
+$role = $_SESSION['ROLE'];
+
+$canView = $_SESSION['ROLE_ADM'] == '1' || $this->acl($role, $this->resourceCodes('view'), $this->moduleCodes('importer'));
+$canCreate = $_SESSION['ROLE_ADM'] == '1' || $this->acl($role, $this->resourceCodes('create'), $this->moduleCodes('importer'));
+$canDelete = $_SESSION['ROLE_ADM'] == '1' || $this->acl($role, $this->resourceCodes('delete'), $this->moduleCodes('importer'));
+?>
+<?php if ($canView): ?>
+    <section class="content-header mt-5">
+        <div class="container-fluid mt-2">
+            <div class="row mb-2">
+                <div class="col-11">
+                    <h1 style="position: relative; top: 5px">
+                        <i class="fas fa-th-list"></i>
+                        Registro de Importações
+                    </h1>
+                </div>
+                <div class="col-1">
+                    <?php if ($canCreate): ?>
+                        <ol class="breadcrumb float-right">
+                            <li class="breadcrumb-item">
+                                <button type="button" class="btn btn-outline-success w-100" title="Nova Importação"
+                                    onclick="newImport();" style="position: relative; top: 3px">
+                                    <i class="fas fa-upload"></i>
+                                </button>
+                            </li>
+                        </ol>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content" style="margin-left: 9px; margin-right: 9px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="tbl_importacoes" style="width: 99.9%;">
+                                    <thead>
+                                        <tr class="text-center" style="height: 30px;">
+                                            <th style="font-size: 14px;">Data</th>
+                                            <th style="font-size: 14px;">Módulo</th>
+                                            <th style="font-size: 14px;">Registros</th>
+                                            <th style="font-size: 14px;">Colaborador</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($data as $entity):
+                                            $expData = explode(" ", $this->formatDateTime($entity['created_at']));
+                                            ?>
+                                            <tr class="text-center"
+                                                onclick="openDetails('<?php echo $entity['uuid']; ?>');"
+                                                style="cursor: pointer;">
+                                                <td style="font-size: 15px">
+                                                    <?php echo $expData[0]; ?>
+                                                </td>
+                                                <td style="font-size: 15px">
+                                                    <?php 
+                                                    switch ($entity['module']) {
+                                                        case 'categorias':
+                                                            echo 'Categorias';
+                                                            break;
+                                                        case 'clientes':
+                                                            echo 'Clientes';
+                                                            break;
+                                                        case 'colaboradores':
+                                                            echo 'Colaboradores';
+                                                            break;
+                                                        default:
+                                                            echo 'Indefinido';
+                                                            break;
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <td style="font-size: 15px">
+                                                    <?php echo $entity['total']; ?>
+                                                </td>
+                                                <td style="font-size: 15px">
+                                                    <?php echo $entity['userName']; ?>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tbl_importacoes').DataTable({
+                "sDom": 'fltip',
+                searching: true,
+                order: [[0, "desc"]],
+                columnDefs: [
+                    { type: 'date-eu', targets: [0] },
+                ],
+                responsive: true,
+                info: true,
+                processing: true,
+                scrollCollapse: true,
+                paging: true,
+                "pageLength": 25,
+                "language": {
+                    "sEmptyTable": "Nenhum registro encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_ &nbsp;",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "sSearch": "Filtrar",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                }
+            });
+        });
+
+        function openDetails(uuid) {
+            $("#modalLargeResult").empty();
+            $("#modalLargeTitle").html('<i class="fa fa-info-circle pr-2"></i> Informações');
+            $("#modalLargeLoader").show();
+            $("#modalLarge").modal('show');
+     
+            $.ajax({
+                type: 'post',
+                url: "<?php echo baseUrl; ?>painel/importar/detalhes",
+                data: { uuid: uuid },
+                async: true
+            }).done(function (data) {
+                $("#modalLargeResult").html(data);
+                $("#modalLargeLoader").hide();
+            }).fail(function () {
+                showInternalErrorAlert();
+                $("#modalLargeLoader").hide();
+            });
+        }
+    </script>
+    <?php if ($canCreate): ?>
+        <script>
+            function newImport() {
+                $("#modalMidResult").empty();
+                $("#modalMidTitle").html('<i class="fa fa-upload pr-2"></i> Importar Dados');
+                $("#modalMidLoader").show();
+                $("#modalMid").modal('show');
+                
+                $.ajax({
+                    type: 'post',
+                    url: "<?php echo baseUrl; ?>painel/importar/nova",
+                    async: true
+                }).done(function (data) {
+                    $("#modalMidResult").html(data);
+                    $("#modalMidLoader").hide();
+                }).fail(function () {
+                    showInternalErrorAlert();
+                    $("#modalMidLoader").hide();
+                });
+            }
+        </script>
+    <?php endif; ?>
+<?php endif; ?>

@@ -1,0 +1,122 @@
+<?php
+$canViewUsers = $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('user'));
+$canViewBlog = $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('blog'));
+$canViewTestimonials = $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('testimonials'));
+$canViewCustomers = $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('customers'));
+$canViewServices = $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('services'));
+$canViewCategories = $this->acl($_SESSION['ROLE'], $this->resourceCodes('view'), $this->moduleCodes('categories'));
+?>
+<section class="content mt-5 pt-4" style="margin-left: 9px; margin-right: 9px;">
+    <div class="container-fluid mt-2">
+        <div class="row">
+            <?php if ($_SESSION['ROLE_ADM'] == '1' || $canViewBlog): ?>
+                <div class="col-md-4">
+                    <div class="small-box bg-primary" onclick="openModule('blog')" style="cursor: pointer;">
+                        <div class="inner">
+                            <p>Publicações</p>
+                            <h3>
+                                <?php echo $this->view->total_publications; ?>
+                            </h3>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-file text-white"></i>
+                        </div>
+                        <a class="small-box-footer" style="cursor: pointer;">
+                            Mais informações <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <?php if ($_SESSION['ROLE_ADM'] == '1' || $canViewTestimonials): ?>
+                <div class="col-md-4">
+                    <div class="small-box bg-primary" onclick="openModule('depoimentos')" style="cursor: pointer;">
+                        <div class="inner">
+                            <p>Depoimentos</p>
+                            <h3>
+                                <?php echo $this->view->total_testimonials; ?>
+                            </h3>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-comment text-white"></i>
+                        </div>
+                        <a class="small-box-footer" style="cursor: pointer;">
+                            Mais informações <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <?php if ($_SESSION['ROLE_ADM'] == '1' || $canViewCustomers): ?>
+                <div class="col-md-4">
+                    <div class="small-box bg-primary" onclick="openModule('clientes')" style="cursor: pointer;">
+                        <div class="inner">
+                            <p>Clientes</p>
+                            <h3>
+                                <?php echo $this->view->total_customers; ?>
+                            </h3>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-users text-white"></i>
+                        </div>
+                        <a class="small-box-footer" style="cursor: pointer;">
+                            Mais informações <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <?php if ($_SESSION['ROLE_ADM'] == '1' || $canViewServices): ?>
+                <div class="col-md-4">
+                    <div class="small-box bg-primary" onclick="openModule('servicos')" style="cursor: pointer;">
+                        <div class="inner">
+                            <p>Serviços</p>
+                            <h3>
+                                <?php echo $this->view->total_services; ?>
+                            </h3>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-tools text-white"></i>
+                        </div>
+                        <a class="small-box-footer" style="cursor: pointer;">
+                            Mais informações <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <?php if ($_SESSION['ROLE_ADM'] == '1' || $canViewCategories): ?>
+                <div class="col-md-4">
+                    <div class="small-box bg-primary" onclick="openModule('categorias')" style="cursor: pointer;">
+                        <div class="inner">
+                            <p>Categorias</p>
+                            <h3>
+                                <?php echo $this->view->total_categories; ?>
+                            </h3>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-filter text-white"></i>
+                        </div>
+                        <a class="small-box-footer" style="cursor: pointer;">
+                            Mais informações <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <?php if ($_SESSION['ROLE_ADM'] == '1' || $canViewUsers): ?>
+                <div class="col-md-4">
+                    <div class="small-box bg-primary" onclick="openModule('usuarios')" style="cursor: pointer;">
+                        <div class="inner">
+                            <p>Colaboradores</p>
+                            <h3>
+                                <?php echo $this->view->total_users; ?>
+                            </h3>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-users-cog text-white"></i>
+                        </div>
+                        <a class="small-box-footer" style="cursor: pointer;">
+                            Mais informações <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>

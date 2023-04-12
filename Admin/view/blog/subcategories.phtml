@@ -1,0 +1,7 @@
+<option value="">Selecione</option>
+<?php foreach ($this->view->subcategories as $subcategory): ?>
+    <option value="<?php echo $subcategory['uuid']; ?>" <?php echo (!empty($_POST['subcategory_uuid']) && $_POST['subcategory_uuid'] == $subcategory['uuid'])
+           ? 'selected' : ''; ?>>
+        <?php echo $subcategory['name']; ?>
+    </option>
+<?php endforeach; ?>
